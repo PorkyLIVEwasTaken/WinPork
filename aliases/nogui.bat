@@ -45,7 +45,7 @@ echo history
 echo Returns all previous commands run in this WinPork session.
 echo -====================================================-
 echo 
-echo [[1;95mINFO[0m] HELP PAGE 1/4
+echo [[1;95mINFO[0m] HELP PAGE 1/5
 exit /b 0
 
 :page2
@@ -73,7 +73,7 @@ echo deltestfile
 echo Deletes all test files.
 echo -====================================================-
 echo  
-echo [[1;95mINFO[0m] HELP PAGE 2/4
+echo [[1;95mINFO[0m] HELP PAGE 2/5
 exit /b 0
 
 :page3
@@ -109,7 +109,7 @@ echo ext {y/n}
 echo Enables / Disables the .winpork extension respectively.
 echo -====================================================-
 echo  
-echo [[1;95mINFO[0m] HELP PAGE 3/4
+echo [[1;95mINFO[0m] HELP PAGE 3/5
 exit /b 0
 
 :page4
@@ -139,5 +139,23 @@ echo dict [Word]
 echo Returns the definition of the given word.
 echo -====================================================-
 echo  
-echo [[1;95mINFO[0m] HELP PAGE 4/4
+echo [[1;95mINFO[0m] HELP PAGE 4/5
+exit /b 0
+
+:page5
+echo -====================================================-
+echo events
+echo Shows the Event Viewer.
+echo -====================================================-
+echo sysinfo
+echo Shows information about your system.
+echo -====================================================-
+echo intset
+echo Shows your Internet Settings.
+echo -====================================================-
+echo sysres
+echo Allows you to restore your system.
+echo -====================================================-
+echo  
+echo [[1;95mINFO[0m] HELP PAGE 5/5
 exit /b 0
