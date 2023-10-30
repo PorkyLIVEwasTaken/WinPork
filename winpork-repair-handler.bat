@@ -1,6 +1,24 @@
 @echo off
 title WinPork RTE Initializer
 
+setlocal
+
+set "RegKey=HKLM\SOFTWARE\WinPork"
+
+rem Use the "reg" command to check if the key exists
+reg query "%RegKey%" >nul 2>&1
+
+if %errorlevel% equ 0 (
+    echo The registry key %RegKey% exists.
+	goto :continuesettingreg
+) else (
+    echo The registry key %RegKey% does not exist, importing WinPork Settings template...
+	reg import C:\WinPork\reg\WinPorkSettingsTemplate.reg
+	goto :continuesettingreg
+)
+:continuesettingreg
+endlocal
+
 set WP_LOC=%SystemDrive%\WinPork\
 set WINROOT=%SystemDrive%
 set LASTUSER=%UserProfile%

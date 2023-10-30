@@ -1,7 +1,7 @@
 @echo off
 echo [[94mSTART[0m] Power computer off
 
-if %LogWinPorkCommandHistory%==true (
+if %wpsettings_LogWinPorkCommandHistory%=="true" (
   mkdir C:\WinPork\logs
   doskey /history > "C:\WinPork\logs\%DATE%_%TIME%.wplog"
 )

@@ -1,7 +1,7 @@
 @echo off
-title WinPork 8.1x64 Repair Tool Initializer
+title WinPork RTE Initializer
 
-echo WinPork 8.1x64 Repair Tool Environment succesfully booted up on version 2.0 > C:\winpork-logs\bootlog.winpork
+echo WinPork RTE succesfully booted up on version 2.0 > C:\winpork-logs\bootlog_%date%_%time%.winpork
 echo [[92mSUCCESS[0m] WinPork RTE bootup on version 2.0
 echo=
 powershell write-host -fore White -back Magenta Welcome to WinPork!
@@ -13,11 +13,44 @@ set PATH=%PATH%;C:\WinPork\aliases
 echo [[92mSUCCESS[0m] Prepared WinPork commands!
 
 echo [[96mPERFORM[0m] Loading WinPork settings...
+
+REM setlocal
+REM set "RegKey=HKLM\SOFTWARE\WinPork"
+REM REM Use the "reg" command to check if the key exists
+REM reg query "%RegKey%" >nul 2>&1
+REM if %errorlevel% equ 0 (
+    REM echo The registry key %RegKey% exists.
+	REM goto :continuesettingreg
+REM ) else (
+    REM echo The registry key %RegKey% does not exist, importing WinPork Settings template...
+	REM reg import C:\WinPork\reg\WinPorkSettingsTemplate.reg
+	REM goto :continuesettingreg
+REM )
+REM :continuesettingreg
+REM endlocal
+
+REM PAUSE
+
+REM :: Call the function with different registry values
+REM @call C:\WinPork\winporkregread.bat "HKLM\SOFTWARE\WinPork" "DisableWinPorkWelcomeScreen"
+REM @call C:\WinPork\winporkregread.bat "HKLM\SOFTWARE\WinPork" "LogWinPorkCommandHistory"
+REM @call C:\WinPork\winporkregread.bat "HKLM\SOFTWARE\WinPork" "NoSavLocRead"
+REM @call C:\WinPork\winporkregread.bat "HKLM\SOFTWARE\WinPork" "PreventSaveFolderCreation"
+REM :: Display the environment variables
+REM echo wpsettings_DisableWinPorkWelcomeScreen is %wpsettings_DisableWinPorkWelcomeScreen%
+REM echo wpsettings_LogWinPorkCommandHistory is %wpsettings_LogWinPorkCommandHistory%
+REM echo wpsettings_NoSavLocRead is %wpsettings_NoSavLocRead%
+REM echo wpsettings_PreventSaveFolderCreation is %wpsettings_PreventSaveFolderCreation%
+REM endlocal
+
+REM PAUSE
+
 if exist C:\WinPork\saved\settings.wpsettings (
   < C:\WinPork\saved\settings.wpsettings ( 
-    set /p LogWinPorkCommandHistory=
-    set /p DisableWinPorkWelcomeScreen=
-    set /p NoSavLocRead=
+    set /p wpsettings_LogWinPorkCommandHistory=
+    set /p wpsettings_DisableWinPorkWelcomeScreen=
+    set /p wpsettings_NoSavLocRead=
+	set /p wpsettings_PreventSaveFolderCreation=
   )
   goto continuesettings
 ) else (
@@ -26,15 +59,17 @@ if exist C:\WinPork\saved\settings.wpsettings (
     echo true
     echo false
     echo false
+	echo false
   ) > C:\WinPork\saved\settings.wpsettings
-set LogWinPorkCommandHistory="true"
-set DisableWinPorkWelcomeScreen="false"
-set NoSavLocRead="false"
+set wpsettings_LogWinPorkCommandHistory="true"
+set wpsettings_DisableWinPorkWelcomeScreen="false"
+set wpsettings_NoSavLocRead="false"
+set wpsettings_PreventSaveFolderCreation="false"
   goto continuesettings
 )
 :continuesettings
 
-if /i "%NoSavLocRead%"=="false" (
+if /i "%wpsettings_NoSavLocRead%"=="false" (
   echo [[96mPERFORM[0m] Loading Saved locations from WinPork Memory File...
   < C:\WinPork\saved\savloc.wpmem (
     rem  
@@ -55,7 +90,7 @@ echo [[96mPERFORM[0m] WinPork startup regkey cleanup...
 reg import C:\winpork\reg\winporksetupcloser.reg
 echo [[92mSUCCESS[0m] WinPork disables at reboot!
 
-if "%DisableWinPorkWelcomeScreen%"=="false" (
+if "%wpsettings_DisableWinPorkWelcomeScreen%"=="false" (
   powershell -Command "& {Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Welcome to WinPork RTE! This repair tool is meant to be used as a last resort if your computer no longer functions (properly). This tool is NOT meant to be used for standard command prompt usage or registry editing; if this is the case, please use the normal Windows Environment instead.','WinPork RTE','OK',[System.Windows.Forms.MessageBoxIcon]::Information);}"
   goto continuewelcomescreen
 )
