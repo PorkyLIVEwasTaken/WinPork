@@ -3,5 +3,5 @@
 *.wpsettings
 Generated Test Files/
 Decrypted/
-saved/
+saved/wpstorage/
 logs/

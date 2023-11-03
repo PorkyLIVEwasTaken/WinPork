@@ -2,7 +2,7 @@
 
 goto :page%1%
 
-echo [[33mWARN[0m] All commands are only available in the C:\ directory. Type "cd C:\" to go back to the C: hard drive.
+echo [[33mWARN[0m] All commands are only available in the C:\ drive. Type "root" to go back to the C: hard drive.
 echo List of available WinPork commands: ([[1;95mINFO[0m] All Windows Command Prompt commands are available as well. Type "help" to display those.)'
 echo 
 
@@ -45,7 +45,7 @@ echo history
 echo Returns all previous commands run in this WinPork session.
 echo -====================================================-
 echo 
-echo [[1;95mINFO[0m] HELP PAGE 1/5
+echo [[1;95mINFO[0m] HELP PAGE 1/6
 exit /b 0
 
 :page2
@@ -73,7 +73,7 @@ echo deltestfile
 echo Deletes all test files.
 echo -====================================================-
 echo  
-echo [[1;95mINFO[0m] HELP PAGE 2/5
+echo [[1;95mINFO[0m] HELP PAGE 2/6
 exit /b 0
 
 :page3
@@ -109,10 +109,31 @@ echo ext {y/n}
 echo Enables / Disables the .winpork extension respectively.
 echo -====================================================-
 echo  
-echo [[1;95mINFO[0m] HELP PAGE 3/5
+echo [[1;95mINFO[0m] HELP PAGE 3/6
 exit /b 0
 
 :page4
+echo -====================================================-
+echo events
+echo Shows the Event Viewer.
+echo -====================================================-
+echo sysinfo
+echo Shows information about your system.
+echo -====================================================-
+echo intset
+echo Shows your Internet Settings.
+echo -====================================================-
+echo sysres
+echo Allows you to restore your system.
+echo -====================================================-
+echo scheduler
+echo Shows the Task Scheduler.
+echo -====================================================-
+echo  
+echo [[1;95mINFO[0m] HELP PAGE 4/6
+exit /b 0
+
+:page5
 echo -====================================================-
 echo weather [Location]
 echo Shows the current weather in the specified location. If no location has been given, it will show the weather of your current location.
@@ -139,23 +160,27 @@ echo dict [Word]
 echo Returns the definition of the given word.
 echo -====================================================-
 echo  
-echo [[1;95mINFO[0m] HELP PAGE 4/5
+echo [[1;95mINFO[0m] HELP PAGE 5/6
 exit /b 0
 
-:page5
+:page6
 echo -====================================================-
-echo events
-echo Shows the Event Viewer.
+echo storage
+echo Opens the WinPork Storage.
 echo -====================================================-
-echo sysinfo
-echo Shows information about your system.
+echo wpuser
+echo Tool to add or remove WinPork users.
 echo -====================================================-
-echo intset
-echo Shows your Internet Settings.
+echo sign {User}
+echo Changes directory to the given wp-user.
 echo -====================================================-
-echo sysres
-echo Allows you to restore your system.
+echo create {Filename+Extension}
+echo Creates a new file with the given file name and extension in the current directory.
+echo -====================================================-
+echo crypt
+echo Opens WinPork Crypt.
 echo -====================================================-
 echo  
-echo [[1;95mINFO[0m] HELP PAGE 5/5
-exit /b 0
+echo [[1;95mINFO[0m] HELP PAGE 6/6
+exit /b 0h
+
