@@ -112,6 +112,8 @@ echo [[92mSUCCESS[0m] WinPork Settings loaded!
 
 echo [[96mPERFORM[0m] Super-User Check...
 if exist C:\WinPork\saved\wpstorage\wp\users\su (
+    @attrib +r +h "C:\WinPork\saved\wpstorage\wp\users\su\shdw\passwd.wpshdw"
+	@attrib +r +h "C:\WinPork\saved\aether\sudo.passwd"
 	echo [[92mSUCCESS[0m] Super-User ready!
 ) else (
 	echo [[33mWARN[0m] Super-User is missing, creating a new one...
@@ -125,10 +127,17 @@ if exist C:\WinPork\saved\wpstorage\wp\users\su (
 	mkdir C:\WinPork\saved\wpstorage\wp\users\su\vids
 	mkdir C:\WinPork\saved\wpstorage\wp\users\su\msic
 	echo [[92mSUCCESS[0m] Super-User has been created.
+	echo=
+	set /p sudopassword=Please enter a new password for the Super-User:
+	@echo %sudopassword% > "C:\WinPork\saved\wpstorage\wp\users\su\shdw\passwd.wpshdw"
+	@echo %sudopassword% > "C:\WinPork\saved\aether\sudo.passwd"
+	@attrib +r +h "C:\WinPork\saved\wpstorage\wp\users\su\shdw\"
+	@attrib +r +h "C:\WinPork\saved\aether\sudo.passwd"
 )
 
 echo [[96mPERFORM[0m] Making SavLoc Read-Only...
 @attrib +r +h "C:\WinPork\saved\savloc.wpmem"
+@attrib +r +h "C:\WinPork\saved\aether"
 
 if /i "%wpsettings_NoSavLocRead%"=="false" (
   echo [[96mPERFORM[0m] Loading Saved locations from WinPork Memory File...

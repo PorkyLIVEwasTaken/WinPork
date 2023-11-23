@@ -11,7 +11,41 @@ color fd
 echo [[96mPERFORM[0m] Set window title [WinPork RTE]...
 title WinPork RTE
 echo [[92mSUCCESS[0m] Prepared WinPork command center!
-echo=
 cls
+
+
+
+echo [[96mPERFORM[0m] Log in system...
+title WinPork RTE (Use ALT+F4 to reboot to Windows...)
+:usernotexist
+set /p logonusername=Username: 
+if exist C:\WinPork\saved\wpstorage\wp\users\%logonusername% (
+    goto :usernameexists
+) else (
+    echo User does not exist!
+    goto :usernotexist
+)
+:usernameexists
+
+:incorrectpassword
+set /p logonpassword=Password: 
+
+set "verifypassword="
+
+rem Read the content of the file into the variable
+< "C:\WinPork\saved\wpstorage\wp\users\%logonusername%\shdw\passwd.wpshdw" set /p verifypassword=
+
+if %logonpassword% == %verifypassword% (
+    goto logoncontinue
+) else (
+    echo Incorrect password!
+	goto :incorrectpassword
+)
+
+
+
+:logoncontinue
+cls
+title WinPork RTE
 powershell write-host -fore White -back Magenta Welcome to WinPork!
 echo Type "nogui" for a list of available WinPork commands.

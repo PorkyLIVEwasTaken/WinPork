@@ -1,7 +1,10 @@
 
 *.wpmem
 *.wpsettings
+*.wpshdw
+*.passwd
 Generated Test Files/
 Decrypted/
 saved/wpstorage/
+saved/aether/
 logs/

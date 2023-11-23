@@ -1,5 +1,6 @@
 @echo off
 echo [[94mSTART[0m] WinPork Crypt
+mkdir C:\WinPork\saved\temp
 
 :wpcryptreset
 
@@ -20,13 +21,13 @@ copy nul "C:\WinPork\saved\temp\tempencrypt.txt"
 echo [[1;95mINFO[0m] Use the opened notepad to type/paste your text. Save the file when closing.
 notepad "C:\WinPork\saved\temp\tempencrypt.txt"
 set /p cryptfilename="[[1;95mQUEST[0m] What is the name of the encrypted file? (This name is used to find the file back in the Crypt.) "
-@certutil -encode "C:\WinPork\saved\temp\tempencrypt.txt" "C:\WinPork\saved\wpcrypt\%cryptfilename%.wpcrypt"
+@certutil -encode "C:\WinPork\saved\temp\tempencrypt.txt" "C:\WinPork\saved\wpstorage\wp\users\%logonusername%\shdw\%cryptfilename%.wpcrypt"
 @del "C:\WinPork\saved\temp\tempencrypt.txt" /f /q
 echo [[92mSUCCESS[0m] Encrypted your text!
 goto :wpcryptreset
 
 :check2
-set /p originalfilelocation="[[1;95mQUEST[0m] What is the location of the file to encrypt? "
+set /p originalfilelocation="[[1;95mQUEST[0m] What is the location of the file you wish to encrypt?"
 set /p cryptfilename="[[1;95mQUEST[0m] What is the name of the encrypted file? Include the file extension. (This name is used to find the file back in the Crypt.) "
 @certutil -encode %originalfilelocation% %cryptfilename%.wpcrypt
 choice /m "Do you wish to remove the original file? "
@@ -50,7 +51,7 @@ goto :wpcryptreset
 
 :check4
 set /p cryptfilename="[[1;95mQUEST[0m] What is the name of the encrypted file? (This name was specified when creating the encrypted file. Please include the file extension. Do not include '.wpcrypt'.) "
-@del "C:\WinPork\saved\wpcrypt\%cryptfilename%.wpcrypt" /f /q
+@del "C:\WinPork\saved\wpstorage\wp\users\%logonusername%\shdw\%cryptfilename%.wpcrypt" /f /q
 echo [[92mSUCCESS[0m] Deleted the encrypted text file!
 goto :wpcryptreset
 
@@ -68,7 +69,7 @@ echo "[[91mFAIL[0m] User cancelled operation."
 goto :wpcryptreset
 
 :check6
-dir "C:\WinPork\saved\wpcrypt\"
+dir "C:\WinPork\saved\wpstorage\wp\users\%logonusername%\shdw"
 PAUSE
 cls
 powershell write-host -fore White -back Magenta Welcome to WinPork!
@@ -76,5 +77,6 @@ echo Type "nogui" for a list of available WinPork commands.
 goto :wpcryptreset
 
 :check7
+rmdir /s /q C:\WinPork\saved\temp
 echo [[91mCLOSE[0m] WinPork Crypt
 exit /b 0
