@@ -1,4 +1,9 @@
 @echo off
+
+if %RAC% == 1 (
+	goto :RAC
+)
+
 cls
 echo [[96mPERFORM[0m] Log in system...
 :usernotexist
@@ -28,3 +33,7 @@ if %logonpassword% == %verifypassword% (
     echo Incorrect password!
 	goto :incorrectpassword
 )
+
+:RAC
+echo [[91mFAIL[0m] This command is not available in Run As Companion!
+exit /b 0

@@ -26,6 +26,7 @@ echo Power off the computer.
 echo -====================================================-
 echo fileboot {FilePath}
 echo Reboot WinPork, but run the specified file instead of the RTE.
+echo ([[33mWARN[0m] This command can brick your computer if used incorrectly. Use with caution!)
 echo -====================================================-
 echo nogui {pageNumber}
 echo Shows this help message.

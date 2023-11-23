@@ -91,6 +91,7 @@ if exist C:\WinPork\saved\settings.wpsettings (
     set /p wpsettings_DisableWinPorkWelcomeScreen=
     set /p wpsettings_NoSavLocRead=
 	set /p wpsettings_PreventSaveFolderCreation=
+	set /p wpsettings_UseWP_Theme=
   )
   goto continuesettings
 ) else (
@@ -100,11 +101,13 @@ if exist C:\WinPork\saved\settings.wpsettings (
     echo false
     echo false
 	echo false
+	echo true
   ) > C:\WinPork\saved\settings.wpsettings
 set wpsettings_LogWinPorkCommandHistory="true"
 set wpsettings_DisableWinPorkWelcomeScreen="false"
 set wpsettings_NoSavLocRead="false"
 set wpsettings_PreventSaveFolderCreation="false"
+set wpsettings_UseWP_Theme="true"
   goto continuesettings
 )
 :continuesettings
@@ -154,6 +157,22 @@ if /i "%wpsettings_NoSavLocRead%"=="false" (
   goto continuesavloc
 )
 :continuesavloc
+
+echo [[94mSTART[0m] Network check...
+echo [[96mPERFORM[0m] Local loopback test to check network card health...
+@ping 127.0.0.1
+
+if %errorlevel% == 0 (
+	echo [[92mSUCCESS[0m] Network card ready!
+	goto :continuenetwork
+) else (
+	echo [[91mFAIL[0m] Local loopback returned one or multiple packet losses, consider replacing your network card.
+	timeout /t 5
+	goto :continuenetwork
+)
+:continuenetwork
+
+set RAC=0
 
 echo [[94mSTART[0m] Activating WinPork auto-disable on reboot...
 echo [[96mPERFORM[0m] WinPork startup regkey cleanup...
