@@ -2,6 +2,10 @@
 
 echo [[94mSTART[0m] Full system scan and repair...
 
+if %RAC% == 1 (
+	echo [[33mWARN[0m] Although this might be able to fix problems your computer is experiencing in Run As Companion, it is still strongly recommended to run "scanfull" in RTE instead.
+)
+
 choice /m "This can revert all changes made to protected system files, without any further warnings. This will also restart your computer to check and repair disk errors. Do you wish to continue?"
 goto :checkvulnerable%errorlevel%
 

@@ -1,6 +1,10 @@
 @echo off
 echo [[94mSTART[0m] WinPork User Wizard
 
+if %RAC%==1 (
+	goto :RAC
+)
+
 REM 1=NORMAL/quick
 REM 2=Username
 REM 3=HasPassword{y/N}
@@ -92,3 +96,7 @@ if %username% == su (
 	echo [[92mSUCCESS[0m] User %username% has been converted to a Windows account.
 	exit /b 0
 )
+
+:RAC
+echo [[91mFAIL[0m] This command is not available in Run As Companion!
+exit /b 0
