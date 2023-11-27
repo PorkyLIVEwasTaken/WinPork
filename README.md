@@ -1,6 +1,4 @@
-# WinPork
- A lightweight operating system piggybacking on Windows.
-## WinPork (WinPork-RTE)
+# WinPork (WinPork-RTE)
  WinPork is a simple, minimalistic and user-friendly Windows-based Operating System, available for Windows 7 up until Windows 11.
 
 ## Installation
