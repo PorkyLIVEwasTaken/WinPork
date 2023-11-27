@@ -42,7 +42,6 @@
 > 2. If a command asks for you to make a choice, the uppercase choice is the default choice. If no choice has been made, then the default option will be picked.
 
 ### WinPork Help & Info Commands
-<details>
 + nogui {pageNumber}
   + Shows this help message.
   + {pageNumber} = Help page to display
@@ -80,10 +79,8 @@
   + Reboot WinPork, but run the specified file instead of the RTE.
 > [!CAUTION]
 > The `fileboot` command can brick your computer if used incorrectly. Use with caution!
-> </details>
 
 ### WinPork Storage System Commands
-<details>
 + storage
   + Opens the WinPork Storage.
 + wpuser
@@ -94,10 +91,8 @@
   + Creates a new file with the given file name and extension in the current directory.
 + crypt
   + Opens WinPork Crypt.
-</details>
 
 ### Windows User Account Commands
-<details>
 + newuser {NORMAL/quick} [Username] [HasPassword{y/N}] [IsAdmin{y/N}]
   + Creates a new user. Normal will ask you several questions to create the account, whilst quick allows you to directly insert the acccount details as command arguments.
 + deluser {username}
@@ -110,10 +105,8 @@
 > If no username is specified, the "C:\Users" folder will be opened instead.
 + admin {y/N}
   + Enables / Disables the Administrator account respectively.
-</details>
 
 ### Utility Commands
-<details>
 + gentestfile {size}
   + Generates a Test File in C:\Generated Test Files with the specified size.
   + {size} = File Size in bytes
@@ -136,10 +129,8 @@
   + Returns information about the given URL.
 + publicip
   + Returns the computer's public IP address.
-</details>
 
 ### System Repair Commands
-<details>
 + scanquick {y/N}
   + Make some quick scans and repairs any missing or corrupt Windows System Files.
 + scanfull {y/N}
@@ -160,10 +151,8 @@
   + Allows you to restore your system.
 + scheduler
   + Shows the Task Scheduler.
-</details>
 
 ### Misc. Commands
-<details>
 + weather [Location]
   + Shows the current weather in the specified location.
 > [!TIP]
@@ -178,7 +167,6 @@
   + Returns the latest Tweet of the given Twitter Username.
 + dict [Word]
   + Returns the definition of the given word.
-</details>
  
 ## List of WinPork Settings
 > [!NOTE]
