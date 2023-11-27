@@ -42,130 +42,130 @@
 > 2. If a command asks for you to make a choice, the uppercase choice is the default choice. If no choice has been made, then the default option will be picked.
 
 ### WinPork Help & Info Commands
-+ nogui {pageNumber}
++ `nogui {pageNumber}`
   + Shows this help message.
   + {pageNumber} = Help page to display
-+ settings
++ `settings`
   + Opens the settings file of WinPork.
-+ wpver [print]
++ `wpver [print]`
   + Shows the current version of WinPork. Using `wpver print` will put the current version of WinPork in a text file.
-+ clearscreen / sr
++ `clearscreen` / `sr`
   + Clears the WinPork teminal.
-+ wait [seconds] [quick]
++ `wait [seconds] [quick]`
   + Let WinPork wait for a few seconds. 
 > [!NOTE]
 > If no arguments are given, WinPork will ask for how long it needs to wait.
-+ history
++ `history`
   + Returns all previous commands run in this WinPork session.
-+ ext {y/n}
++ `ext {y/N}`
   + Enables / Disables the .winpork extension respectively.
-+ wpmenu {y/N}
++ `wpmenu {y/N}`
   + Shows / Hides the 'Boot WinPork' option in the Desktop Context Menu respectively.
 > [!NOTE]
 > Might not work on all versions of Windows.
 
 ### Restart / Shutdown Commands
-+ reboot [safe]
++ `reboot [safe]`
   + Shutdown WinPork and reboot to Windows. Using `reboot safe` will restart the computer in Windows Safe Mode.
-+ envreset
++ `envreset`
   + Restart WinPork.
-+ bootfw
++ `bootfw`
   + Reboots your computer to the BIOS of your firmware.
-+ rac
++ `rac`
   + Reboots your computer back to Windows. WinPork will start in Companion Mode once you have logged in.
-+ shutdown
++ `shutdown`
   + Shutdown the computer. Windows will be booted next time you turn on your computer.
-+ fileboot {FilePath}
++ `fileboot {FilePath}`
   + Reboot WinPork, but run the specified file instead of the RTE.
 > [!CAUTION]
 > The `fileboot` command can brick your computer if used incorrectly. Use with caution!
 
 ### WinPork Storage System Commands
-+ storage
++ `storage`
   + Opens the WinPork Storage.
-+ wpuser
++ `wpuser`
   + Tool to add or remove WinPork users, or to convert WinPork users to Windows accounts.
-+ sign {User}
++ `sign {User}`
   + Changes directory to the given wp-user.
-+ create {Filename+Extension}
++ `create {Filename+Extension}`
   + Creates a new file with the given file name and extension in the current directory.
-+ crypt
++ `crypt`
   + Opens WinPork Crypt.
 
 ### Windows User Account Commands
-+ newuser {NORMAL/quick} [Username] [HasPassword{y/N}] [IsAdmin{y/N}]
++ `newuser {NORMAL/quick} [Username] [HasPassword{y/N}] [IsAdmin{y/N}]`
   + Creates a new user. Normal will ask you several questions to create the account, whilst quick allows you to directly insert the acccount details as command arguments.
-+ deluser {username}
++ `deluser {username}`
   + Deletes a user.
   + {username} = User to be deleted
-+ user {username}
++ `user {username}`
   + Navigate to the directory of the specified user.
   + {username} = User to go to
 > [!NOTE]
 > If no username is specified, the "C:\Users" folder will be opened instead.
-+ admin {y/N}
++ `admin {y/N}`
   + Enables / Disables the Administrator account respectively.
 
 ### Utility Commands
-+ gentestfile {size}
++ `gentestfile {size}`
   + Generates a Test File in C:\Generated Test Files with the specified size.
   + {size} = File Size in bytes
-+ deltestfile
++ `deltestfile`
   + Deletes all test files.
-+ sys
++ `sys`
   + Navigate to system32.
-+ sysroot
++ `sysroot`
   + Navigate to C:\
-+ verboselogon {y/n}
++ `verboselogon {y/n}`
   + Enables / Disables verbose login messages respectively.
-+ cursor {y/n/force}
++ `cursor {y/n/force}`
   + Shows / Hides the cursor respectively.
 > [!NOTE]
 > Might not work on all versions of Windows.
 
 > [!TIP]
 > If the cursor does not show up after using `cursor y`, using `cursor force` might show the cursor anyways. 
-+ urlinfo {URL}
++ `urlinfo {URL}`
   + Returns information about the given URL.
-+ publicip
++ `publicip`
   + Returns the computer's public IP address.
 
 ### System Repair Commands
-+ scanquick {y/N}
++ `scanquick {y/N}`
   + Make some quick scans and repairs any missing or corrupt Windows System Files.
-+ scanfull {y/N}
++ `scanfull {y/N}`
   + Fully scans your computer for any potential problems that might prevent Windows from working.
-+ pong / llb
++ `pong / llb`
   + Pings 127.0.0.1 to check if your network card is still working.
-+ skcp
++ `skcp`
   + Enables / Disables opening Command Prompt after pressing the SHIFT-key 5 times.
 > [!NOTE]
 > Sticky Keys will not be available through pressing SHIFT 5 times.
-+ events
++ `events`
   + Shows the Event Viewer.
-+ sysinfo
++ `sysinfo`
   + Shows information about your system.
-+ intset
++ `intset`
   + Shows your Internet Settings.
-+ sysres
++ `sysres`
   + Allows you to restore your system.
-+ scheduler
++ `scheduler`
   + Shows the Task Scheduler.
 
 ### Misc. Commands
-+ weather [Location]
++ `weather [Location]`
   + Shows the current weather in the specified location.
 > [!TIP]
 > If no location has been given, it will show the weather of your current location.
-+ unshort-url {URL}
++ `unshort-url {URL}`
   + Unshortens shortened URLs, if applicable.
-+ genqr {URL}
++ `genqr {URL}`
   + Generates a QR-code for the given URL.
-+ yt-latest {Channel}
++ `yt-latest {Channel}`
   + Returns the title of the latest YouTube video of the given YouTube Channel.
-+ twt-latest {Username}
++ `twt-latest {Username}`
   + Returns the latest Tweet of the given Twitter Username.
-+ dict [Word]
++ `dict [Word]`
   + Returns the definition of the given word.
  
 ## List of WinPork Settings
