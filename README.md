@@ -8,7 +8,7 @@
 2. Open the .zip file. 
 3. Copy the "WinPork-main" folder and paste it in your C:\ drive. Do not unpack the .zip, as this would result in the creation of an unnecessary folder we have to get rid of.
 
-> **IMPORTANT**
+> [!IMPORTANT]
 > No other drive but the C:\ drive is currently supported. We're working on some magic dynamic drive support!
 4. Rename the "WinPork-main" folder to "WinPork"
 > [!TIP]
