@@ -45,6 +45,12 @@ REM endlocal
 
 REM PAUSE
 
+echo [[96mPERFORM[0m] WinPork Operating System Check...
+wmic os get ostype, buildnumber, osarchitecture, oslanguage, status, lastbootuptime, version, windowsdirectory
+
+echo [[96mPERFORM[0m] WinPork CPU Check...
+wmic cpu get deviceid, numberofcores, maxclockspeed
+
 echo [[94mSTART[0m] WinPork Memory preparation...
 
 echo [[96mPERFORM[0m] Checking available storage space for Memory...
@@ -74,6 +80,8 @@ echo [[96mPERFORM[0m] Creating empty Memory file...
 echo [[92mSUCCESS[0m] WinPork Memory file ready!
 
 echo [[94mSTART[0m] Preparing WinPork Storage system...
+mkdir C:\WinPork\saved\aether
+@attrib +h "C:\WinPork\saved\aether"
 if exist C:\WinPork\saved\wpstorage\wp (
     goto continuewpstorage
 ) else (
@@ -92,6 +100,7 @@ if exist C:\WinPork\saved\settings.wpsettings (
     set /p wpsettings_NoSavLocRead=
 	set /p wpsettings_PreventSaveFolderCreation=
 	set /p wpsettings_UseWP_Theme=
+	set /p wpsettings_PauseAfterBoot=
   )
   goto continuesettings
 ) else (
@@ -102,12 +111,14 @@ if exist C:\WinPork\saved\settings.wpsettings (
     echo false
 	echo false
 	echo true
+	echo false
   ) > C:\WinPork\saved\settings.wpsettings
 set wpsettings_LogWinPorkCommandHistory="true"
 set wpsettings_DisableWinPorkWelcomeScreen="false"
 set wpsettings_NoSavLocRead="false"
 set wpsettings_PreventSaveFolderCreation="false"
 set wpsettings_UseWP_Theme="true"
+set wpsettings_PauseAfterBoot="false"
   goto continuesettings
 )
 :continuesettings
@@ -161,6 +172,36 @@ if %errorlevel% == 0 (
 :continuenetwork
 
 set RAC=1
+
+echo [[94mSTART[0m] Checking if WinPork has VMWare-host...
+setlocal enabledelayedexpansion
+
+set "vmwareDetected=false"
+
+for /f "skip=3 tokens=2 delims= " %%i in ('ipconfig /all ^| find "Physical Address"') do (
+    set "macAddress=%%i"
+    set "macPrefix=!macAddress:~0,8!"
+
+    rem Check for common VMware MAC address prefixes
+    if /i "!macPrefix!"=="00:50:56" (
+        set "vmwareDetected=true"
+    )
+)
+
+if !vmwareDetected! == "true" (
+    echo VMware detected.
+    rem Add your commands for when VMware is detected
+	
+) else (
+    echo Not running on VMware.
+    rem Add your commands for when VMware is not detected
+)
+
+endlocal
+
+if "%wpsettings_PauseAfterBoot%"=="true" (
+	PAUSE
+)
 
 echo [[36mSOLO-PERFORM[0m] WinPork boot finisher...
 

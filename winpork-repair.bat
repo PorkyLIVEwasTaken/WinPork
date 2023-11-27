@@ -45,6 +45,12 @@ REM endlocal
 
 REM PAUSE
 
+echo [[96mPERFORM[0m] WinPork Operating System Check...
+wmic os get ostype, buildnumber, osarchitecture, oslanguage, status, lastbootuptime, version, windowsdirectory
+
+echo [[96mPERFORM[0m] WinPork CPU Check...
+wmic cpu get deviceid, numberofcores, maxclockspeed
+
 echo [[94mSTART[0m] WinPork Memory preparation...
 
 echo [[96mPERFORM[0m] Checking available storage space for Memory...
@@ -74,6 +80,8 @@ echo [[96mPERFORM[0m] Creating empty Memory file...
 echo [[92mSUCCESS[0m] WinPork Memory file ready!
 
 echo [[94mSTART[0m] Preparing WinPork Storage system...
+mkdir C:\WinPork\saved\aether
+@attrib +h "C:\WinPork\saved\aether"
 if exist C:\WinPork\saved\wpstorage\wp (
     goto continuewpstorage
 ) else (
@@ -92,6 +100,7 @@ if exist C:\WinPork\saved\settings.wpsettings (
     set /p wpsettings_NoSavLocRead=
 	set /p wpsettings_PreventSaveFolderCreation=
 	set /p wpsettings_UseWP_Theme=
+	set /p wpsettings_PauseAfterBoot=
   )
   goto continuesettings
 ) else (
@@ -102,12 +111,14 @@ if exist C:\WinPork\saved\settings.wpsettings (
     echo false
 	echo false
 	echo true
+	echo false
   ) > C:\WinPork\saved\settings.wpsettings
 set wpsettings_LogWinPorkCommandHistory="true"
 set wpsettings_DisableWinPorkWelcomeScreen="false"
 set wpsettings_NoSavLocRead="false"
 set wpsettings_PreventSaveFolderCreation="false"
 set wpsettings_UseWP_Theme="true"
+set wpsettings_PauseAfterBoot="true"
   goto continuesettings
 )
 :continuesettings
@@ -184,6 +195,10 @@ if "%wpsettings_DisableWinPorkWelcomeScreen%"=="false" (
   goto continuewelcomescreen
 )
 :continuewelcomescreen
+
+if "%wpsettings_PauseAfterBoot%"=="true" (
+	PAUSE
+)
 
 echo [[36mSOLO-PERFORM[0m] WinPork boot finisher...
 @cmd /k "C:\winpork\winpork-boot-finisher.bat"
