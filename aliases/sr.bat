@@ -6,4 +6,5 @@ if %RAC% == 1 (
 	echo [[33mWARN[0m] Not all commands might be available through WinPork Run As Companion!
 )
 
+echo=
 echo Type "nogui" for a list of available WinPork commands.
