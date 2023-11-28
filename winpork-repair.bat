@@ -1,11 +1,22 @@
 @echo off
 title WinPork RTE Initializer
 
-echo WinPork RTE succesfully booted up on version 2.0 > C:\winpork-logs\bootlog_%date%_%time%.winpork
-echo [[92mSUCCESS[0m] WinPork RTE bootup on version 2.0
+REM Insert WinPork Version here, winpork.wpver is deprecated.
+set wp_ver=1.0
+
+echo WinPork RTE succesfully booted up on version %wp_ver% > C:\winpork-logs\bootlog_%date%_%time%.winpork
+echo [[92mSUCCESS[0m] WinPork RTE bootup on version %wp_ver%
+echo System Timestamp: %date% %time%
 echo=
 powershell write-host -fore White -back Magenta Welcome to WinPork!
 echo=
+
+echo [[96mPERFORM[0m] WinPork UCID Verification Check...
+< C:\WinPork\saved\aether\ucid.wp ( 
+    set /p wpUCID=
+  )
+
+echo WPUCID = %wpUCID%
 
 echo [[94mSTART[0m] Preparing WinPork commands...
 echo [[96mPERFORM[0m] Recognising WinPork command aliases...
@@ -13,6 +24,8 @@ set PATH=%PATH%;C:\WinPork\aliases
 echo [[92mSUCCESS[0m] Prepared WinPork commands!
 
 echo [[96mPERFORM[0m] Loading WinPork settings...
+
+REM This was an attempt to put the WinPork settings in the registry, you can try to make it work :P
 
 REM setlocal
 REM set "RegKey=HKLM\SOFTWARE\WinPork"
@@ -140,6 +153,8 @@ if exist C:\WinPork\saved\wpstorage\wp\users\su (
 	mkdir C:\WinPork\saved\wpstorage\wp\users\su\trsh
 	mkdir C:\WinPork\saved\wpstorage\wp\users\su\vids
 	mkdir C:\WinPork\saved\wpstorage\wp\users\su\msic
+	set wp_su_verification="WPRTE:%random%:%random%:%random%:%random%:%random%"
+	echo %wp_su_verification% > "C:\WinPork\saved\wpstorage\wp\users\su\shdw\uuid.wpuser"
 	echo [[92mSUCCESS[0m] Super-User has been created.
 	echo=
 	set /p sudopassword=Please enter a new password for the Super-User:
