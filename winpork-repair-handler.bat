@@ -31,4 +31,16 @@ set LASTUSER=%UserProfile%
 
 reg import C:\winpork\reg\winporksetupmaintainer.reg
 
+if exist C:\WinPork\saved\aether\ucid.wp (
+	goto :continueucid
+) else (
+	set wp_cverification=WP000:%random%:%random%:%random%:%random%:%random%
+	goto :continueucid
+)
+
+:continueucid
+
+echo %wp_cverification% > "C:\WinPork\saved\aether\ucid.wp"
+@attrib +r +h "C:\WinPork\saved\aether\ucid.wp"
+
 shutdown -r -t 7 -f -c "Your computer will be restarted to boot up WinPork RTE."

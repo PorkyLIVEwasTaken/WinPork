@@ -45,6 +45,9 @@ echo -====================================================-
 echo history
 echo Returns all previous commands run in this WinPork session.
 echo -====================================================-
+echo ucid
+echo Shows WinPork Computer ID.
+echo -====================================================-
 echo 
 echo [[1;95mINFO[0m] HELP PAGE 1/6
 exit /b 0
@@ -72,6 +75,9 @@ echo {size} = File Size in bytes
 echo -====================================================-
 echo deltestfile
 echo Deletes all test files.
+echo -====================================================-
+echo idgen
+echo Generates a new WinPork ID. Does not alter existing IDs.
 echo -====================================================-
 echo  
 echo [[1;95mINFO[0m] HELP PAGE 2/6
@@ -172,11 +178,17 @@ echo -====================================================-
 echo wpuser
 echo Tool to add or remove WinPork users.
 echo -====================================================-
+echo uuid
+echo Shows WinPork User ID of the current user.
+echo -====================================================-
 echo sign {User}
 echo Changes directory to the given wp-user.
 echo -====================================================-
 echo create {Filename+Extension}
 echo Creates a new file with the given file name and extension in the current directory.
+echo -====================================================-
+echo acid {FileName+Extension}
+echo Moves the file with the given name to the Trash Bin.
 echo -====================================================-
 echo crypt
 echo Opens WinPork Crypt.

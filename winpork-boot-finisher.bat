@@ -48,7 +48,7 @@ if %logonpassword% == %verifypassword% (
 	goto :incorrectpassword
 )
 
-
+< "C:\WinPork\saved\wpstorage\wp\users\%logonusername%\shdw\uuid.wpuser" set /p wpUUID=
 
 :logoncontinue
 cls
