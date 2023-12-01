@@ -48,6 +48,9 @@ echo -====================================================-
 echo ucid
 echo Shows WinPork Computer ID.
 echo -====================================================-
+echo wiki
+echo Shows the WinPork wiki.
+echo -====================================================-
 echo 
 echo [[1;95mINFO[0m] HELP PAGE 1/6
 exit /b 0

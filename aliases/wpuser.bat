@@ -31,10 +31,11 @@ mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\shdw
 mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\trsh
 mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\vids
 mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\msic
-set wp_su_verification=WPRTE:%random%:%random%:%random%:%random%:%random%
-echo %wp_su_verification% > "C:\WinPork\saved\wpstorage\wp\users\%username%\shdw\uuid.wpuser"
+set wp_verification=WPRTE:%random%:%random%:%random%:%random%:%random%
+echo %wp_verification% > "C:\WinPork\saved\wpstorage\wp\users\%username%\shdw\uuid.wpuser"
 @echo %password% > "C:\WinPork\saved\wpstorage\wp\users\%username%\shdw\passwd.wpshdw"
 @attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%username%\shdw/passwd.wpshdw
+@attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%username%\shdw/uuid.wpuser
 echo [[92mSUCCESS[0m] User %username% has been created.
 endlocal
 exit /b 0
@@ -117,10 +118,11 @@ mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\shdw
 mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\trsh
 mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\vids
 mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\msic
-set wp_su_verification=WPRAC:%random%:%random%:%random%:%random%:%random%
-echo %wp_su_verification% > "C:\WinPork\saved\wpstorage\wp\users\%username%\shdw\uuid.wpuser"
+set wp_verification=WPRAC:%random%:%random%:%random%:%random%:%random%
+echo %wp_verification% > "C:\WinPork\saved\wpstorage\wp\users\%username%\shdw\uuid.wpuser"
 @echo %password% > "C:\WinPork\saved\wpstorage\wp\users\%username%\shdw\passwd.wpshdw"
 @attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%username%\shdw/passwd.wpshdw
+@attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%username%\shdw/uuid.wpuser
 echo [[92mSUCCESS[0m] User %username% has been created.
 endlocal
 exit /b 0
