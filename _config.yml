@@ -6,3 +6,4 @@ incremental: false
 highlighter: rouge
 gist:
   noscript: false
+show_downloads: true
