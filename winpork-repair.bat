@@ -103,6 +103,10 @@ if exist C:\WinPork\saved\wpstorage\wp (
 	attrib +h "C:\WinPork\saved\wpstorage\"
 )
 :continuewpstorage
+
+echo [[96mPERFORM[0m] Mounting community-made Commands...
+mklink /D C:\WinPork\.mods C:\WinPork\aliases
+
 echo [[92mSUCCESS[0m] WinPork Storage system ready!
 
 echo [[94mSTART[0m] Loading WinPork settings...
@@ -160,7 +164,7 @@ if exist C:\WinPork\saved\wpstorage\wp\users\su (
 	set /p sudopassword=Please enter a new password for the Super-User:
 	@echo %sudopassword% > "C:\WinPork\saved\wpstorage\wp\users\su\shdw\passwd.wpshdw"
 	@echo %sudopassword% > "C:\WinPork\saved\aether\sudo.passwd"
-	@attrib +r +h "C:\WinPork\saved\wpstorage\wp\users\su\shdw\"
+	@attrib +r +h "C:\WinPork\saved\wpstorage\wp\users\su\shdw\uuid.wpuser"
 	@attrib +r +h "C:\WinPork\saved\aether\sudo.passwd"
 )
 
