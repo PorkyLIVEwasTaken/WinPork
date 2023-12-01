@@ -1,2 +1,9 @@
 markdown: GFM
 theme: jekyll-theme-cayman
+lsi: false
+safe: true
+incremental: false
+highlighter: rouge
+gist:
+  noscript: false
+show_downloads: true
