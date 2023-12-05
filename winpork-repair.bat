@@ -107,6 +107,52 @@ if exist C:\WinPork\saved\wpstorage\wp (
 echo [[96mPERFORM[0m] Mounting community-made Commands...
 mklink /D C:\WinPork\.mods C:\WinPork\aliases
 
+echo [[96mPERFORM[0m] Check for full dirtree...
+if exist C:\WinPork\saved\wp\sys\dtr.b (
+	goto :continuedirtree
+) else (
+	mkdir C:\WinPork\saved\wpstorage\wp\acid
+	mkdir C:\WinPork\saved\wpstorage\wp\app
+	mkdir C:\WinPork\saved\wpstorage\wp\cfg
+	mkdir C:\WinPork\saved\wpstorage\wp\dev
+	mkdir C:\WinPork\saved\wpstorage\wp\dev\workbench
+	mkdir C:\WinPork\saved\wpstorage\wp\dsk
+	mkdir C:\WinPork\saved\wpstorage\wp\lib
+	mkdir C:\WinPork\saved\wpstorage\wp\lib\docs
+	mkdir C:\WinPork\saved\wpstorage\wp\lib\imgs
+	mkdir C:\WinPork\saved\wpstorage\wp\lib\msic
+	mkdir C:\WinPork\saved\wpstorage\wp\lib\vids
+	mkdir C:\WinPork\saved\wpstorage\wp\sys
+	mkdir C:\WinPork\saved\wpstorage\wp\var
+	xcopy nul C:\WinPork\saved\wpstorage\wp\sys\dtr.b
+	
+	setlocal enabledelayedexpansion
+
+	rem Clear existing symbolic links
+	del /q "C:\WinPork\saved\wpstorage\wp\dsk\*"
+
+	rem Loop through drive letters from A to Z
+	for %%I in (A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (
+		rem Determine the link name based on the drive letter
+		if "%%I"=="A" (
+			set linkName=fdA
+		) else if "%%I"=="B" (
+			set linkName=fdB
+		) else if "%%I"=="C" (
+			set linkName=sysdC
+		) else (
+			set linkName=ext%%I
+		)
+
+		rem Create the symbolic link
+		mklink "C:\WinPork\saved\wpstorage\wp\dsk\!linkName!" "%%I:\"
+	)
+
+	echo [SUCCESS] Symbolic links created for drives A: through Z:
+	endlocal
+)
+
+:continuedirtree
 echo [[92mSUCCESS[0m] WinPork Storage system ready!
 
 echo [[94mSTART[0m] Loading WinPork settings...
