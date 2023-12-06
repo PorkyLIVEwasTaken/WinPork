@@ -5,7 +5,8 @@
 *.passwd
 Generated Test Files/
 Decrypted/
-saved/wpstorage/
-saved/aether/
-saved/idgens/
+saved/*
+!saved/readme.txt
 logs/
+aliases/.mod/*
+!aliases/.mod/example.bat

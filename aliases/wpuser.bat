@@ -1,7 +1,7 @@
 @echo off
 echo [[94mSTART[0m] WinPork User Wizard
 
-if %RAC%==1 (
+if %RAC% == 1 (
 	goto :RAC
 )
 
@@ -19,30 +19,31 @@ exit /b 0
 :modenewuser
 :modeadduser
 setlocal enabledelayedexpansion
-set /p username="[[1;95mQUEST[0m] What would you like to be the name of the new user? "
+set /p wpusername="[[1;95mQUEST[0m] What would you like to be the name of the new user? "
 set /p password="[[1;95mQUEST[0m] What would you like to be the password of the new user? "
 
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\cnfg
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\docs
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\home
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\imgs
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\root
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\shdw
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\trsh
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\vids
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\msic
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\cnfg
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\docs
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\home
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\imgs
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\root
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\shdw
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\trsh
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\vids
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\msic
 set wp_verification=WPRTE:%random%:%random%:%random%:%random%:%random%
-echo %wp_verification% > "C:\WinPork\saved\wpstorage\wp\users\%username%\shdw\uuid.wpuser"
-@echo %password% > "C:\WinPork\saved\wpstorage\wp\users\%username%\shdw\passwd.wpshdw"
-@attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%username%\shdw/passwd.wpshdw
-@attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%username%\shdw/uuid.wpuser
-echo [[92mSUCCESS[0m] User %username% has been created.
+echo %wp_verification% > "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\shdw\uuid.wpuser"
+@echo %password% > "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\shdw\passwd.wpshdw"
+@attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%wpusername%\shdw/passwd.wpshdw
+@attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%wpusername%\shdw/uuid.wpuser
+echo [[92mSUCCESS[0m] User %wpusername% has been created.
 endlocal
 exit /b 0
 
 :modesetpasswd
 setlocal enabledelayedexpansion
 set /p password="[[1;95mQUEST[0m] What would you like to be the password of the new user? "
+@del C:\WinPork\saved\wpstorage\wp\users\%logonusername%\shdw\passwd.wpshdw /f /a:h
 @echo %password% > C:\WinPork\saved\wpstorage\wp\users\%logonusername%\shdw\passwd.wpshdw
 @attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%logonusername%\shdw\passwd.wpshdw
 echo [[92mSUCCESS[0m] Password for user %logonusername% has been changed.
@@ -50,49 +51,53 @@ endlocal
 exit /b 0
 
 :modedeluser
-if %logonusername% == su (
-set /p username="[[1;95mQUEST[0m] What is the name of the user that has to be deleted? "
-if %username% == su (
+if "%logonusername%" == "su" ( 
+set /p wpusername="[[1;95mQUEST[0m] What is the name of the user that has to be deleted? "
+if "%wpusername%" == "su" (
     echo [[91mFAIL[0m] You cannot delete the Super-User!
 ) else (
 choice /m "Are you sure you want to delete this user? " /d N /t 10 /c NY
 if %errorlevel% == 1 (
         echo [[91mFAIL[0m] User cancelled command, or command timed out.
+		exit /b 0
 ) else (
-    rmdir /s /q C:\WinPork\saved\wpstorage\wp\users\%username%
-    echo [[92mSUCCESS[0m] User %username% has been removed.
+    rmdir /s /q C:\WinPork\saved\wpstorage\wp\users\%wpusername%
+    echo [[92mSUCCESS[0m] User %wpusername% has been removed.
+	exit /b 0
 )
 )
 ) else (
     echo [[91mFAIL[0m] You need to be logged in as the Super-User to do this!
+	exit /b 0
 )
 
 :modeconvuser
-set /p username="[[1;95mQUEST[0m] What is the name of the user that needs to be converted to a Windows account? "
-if %username% == su (
+set /p wpusername="[[1;95mQUEST[0m] What is the name of the user that needs to be converted to a Windows account? "
+if "%wpusername%" == "su" (
     echo [[91mFAIL[0m] The Super-User cannot be converted to a Windows account!
+	exit /b 0
 ) else (
-    echo [[94mSTART[0m] Convert User (WinPork -> Windows)
-	net user /add %username%
+    echo [[94mSTART[0m] Convert User (WinPork to Windows)
+	net user /add %wpusername%
 	
-	mklink /D "C:\Users\%username%\Desktop" "C:\Users\Default\Desktop"
-    mklink /D "C:\Users\%username%\Documents" "C:\Users\Default\Documents"
-    mklink /D "C:\Users\%username%\Downloads" "C:\Users\Default\Downloads"
-    mklink /D "C:\Users\%username%\Music" "C:\Users\Default\Music"
-    mklink /D "C:\Users\%username%\Pictures" "C:\Users\Default\Pictures"
-	mklink /D "C:\Users\%username%\Videos" "C:\Users\Default\Videos"
+	mklink /D "C:\Users\%wpusername%\Desktop" "C:\Users\Default\Desktop"
+    mklink /D "C:\Users\%wpusername%\Documents" "C:\Users\Default\Documents"
+    mklink /D "C:\Users\%wpusername%\Downloads" "C:\Users\Default\Downloads"
+    mklink /D "C:\Users\%wpusername%\Music" "C:\Users\Default\Music"
+    mklink /D "C:\Users\%wpusername%\Pictures" "C:\Users\Default\Pictures"
+	mklink /D "C:\Users\%wpusername%\Videos" "C:\Users\Default\Videos"
 	
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\cnfg\" "C:\Users\%username%\Desktop\wp-config\" /e /i /h /c /k /y
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\docs\" "C:\Users\%username%\Documents\" /e /i /h /c /k /y
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\home\" "C:\Users\%username%\Desktop\" /e /i /h /c /k /y
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\imgs\" "C:\Users\%username%\Pictures\" /e /i /h /c /k /y
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\msic\" "C:\Users\%username%\Music\" /e /i /h /c /k /y
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\root\" "C:\Users\%username%\" /e /i /h /c /k /y
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\shdw\" "C:\Users\%username%\.shadow\" /e /i /h /c /k /y
-	@attrib +r +h "C:\users\%username%\.shadow"
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\vids\" "C:\Users\%username%\Videos\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\cnfg\" "C:\Users\%wpusername%\Desktop\wp-config\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\docs\" "C:\Users\%wpusername%\Documents\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\home\" "C:\Users\%wpusername%\Desktop\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\imgs\" "C:\Users\%wpusername%\Pictures\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\msic\" "C:\Users\%wpusername%\Music\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\root\" "C:\Users\%wpusername%\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\shdw\" "C:\Users\%wpusername%\.shadow\" /e /i /h /c /k /y
+	@attrib +r +h "C:\users\%wpusername%\.shadow"
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\vids\" "C:\Users\%wpusername%\Videos\" /e /i /h /c /k /y
 	
-	echo [[92mSUCCESS[0m] User %username% has been converted to a Windows account.
+	echo [[92mSUCCESS[0m] User %wpusername% has been converted to a Windows account.
 	exit /b 0
 )
 
@@ -103,33 +108,38 @@ if %username% == su (
 :RAC
 goto :modeRAC%1
 
+:modeRAC
+echo Logged in as %username%
+exit /b 0
+
 :modeRACnewuser
 :modeRACadduser
 setlocal enabledelayedexpansion
-set /p username="[[1;95mQUEST[0m] What would you like to be the name of the new user? "
+set /p wpusername="[[1;95mQUEST[0m] What would you like to be the name of the new user? "
 set /p password="[[1;95mQUEST[0m] What would you like to be the password of the new user? "
 
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\cnfg
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\docs
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\home
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\imgs
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\root
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\shdw
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\trsh
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\vids
-mkdir C:\WinPork\saved\wpstorage\wp\users\%username%\msic
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\cnfg
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\docs
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\home
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\imgs
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\root
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\shdw
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\trsh
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\vids
+mkdir C:\WinPork\saved\wpstorage\wp\users\%wpusername%\msic
 set wp_verification=WPRAC:%random%:%random%:%random%:%random%:%random%
-echo %wp_verification% > "C:\WinPork\saved\wpstorage\wp\users\%username%\shdw\uuid.wpuser"
-@echo %password% > "C:\WinPork\saved\wpstorage\wp\users\%username%\shdw\passwd.wpshdw"
-@attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%username%\shdw/passwd.wpshdw
-@attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%username%\shdw/uuid.wpuser
-echo [[92mSUCCESS[0m] User %username% has been created.
+echo %wp_verification% > "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\shdw\uuid.wpuser"
+@echo %password% > "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\shdw\passwd.wpshdw"
+@attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%wpusername%\shdw/passwd.wpshdw
+@attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%wpusername%\shdw/uuid.wpuser
+echo [[92mSUCCESS[0m] User %wpusername% has been created.
 endlocal
 exit /b 0
 
 :modeRACsetpasswd
 setlocal enabledelayedexpansion
 set /p password="[[1;95mQUEST[0m] What would you like to be the password of the new user? "
+@del C:\WinPork\saved\wpstorage\wp\users\%logonusername%\shdw\passwd.wpshdw /f /a:h
 @echo %password% > C:\WinPork\saved\wpstorage\wp\users\%logonusername%\shdw\passwd.wpshdw
 @attrib +r +h C:\WinPork\saved\wpstorage\wp\users\%logonusername%\shdw\passwd.wpshdw
 echo [[92mSUCCESS[0m] Password for user %logonusername% has been changed.
@@ -137,48 +147,47 @@ endlocal
 exit /b 0
 
 :modeRACdeluser
-if %logonusername% == su (
-set /p username="[[1;95mQUEST[0m] What is the name of the user that has to be deleted? "
-if %username% == su (
+set /p wpusername="[[1;95mQUEST[0m] What is the name of the user that has to be deleted? "
+if "%wpusername%" == "su" (
     echo [[91mFAIL[0m] You cannot delete the Super-User!
-) else (
+) else ( 
 choice /m "Are you sure you want to delete this user? " /d N /t 10 /c NY
 if %errorlevel% == 1 (
         echo [[91mFAIL[0m] User cancelled command, or command timed out.
+		exit /b 0
 ) else (
-    rmdir /s /q C:\WinPork\saved\wpstorage\wp\users\%username%
-    echo [[92mSUCCESS[0m] User %username% has been removed.
+    rmdir /s /q C:\WinPork\saved\wpstorage\wp\users\%wpusername%
+    echo SUCCESS: User %wpusername% has been removed.
+	exit /b 0
 )
-)
-) else (
-    echo [[91mFAIL[0m] You need to be logged in as the Super-User to do this!
 )
 
 :modeRACconvuser
-set /p username="[[1;95mQUEST[0m] What is the name of the user that needs to be converted to a Windows account? "
-if %username% == su (
+set /p wpusername="[[1;95mQUEST[0m] What is the name of the user that needs to be converted to a Windows account? "
+if "%wpusername%" == "su" (
     echo [[91mFAIL[0m] The Super-User cannot be converted to a Windows account!
+	exit /b 0
 ) else (
-    echo [[94mSTART[0m] Convert User (WinPork -> Windows)
-	net user /add %username%
+    echo [[94mSTART[0m] Convert User (WinPork to Windows)
+	net user /add %wpusername%
 	
-	mklink /D "C:\Users\%username%\Desktop" "C:\Users\Default\Desktop"
-    mklink /D "C:\Users\%username%\Documents" "C:\Users\Default\Documents"
-    mklink /D "C:\Users\%username%\Downloads" "C:\Users\Default\Downloads"
-    mklink /D "C:\Users\%username%\Music" "C:\Users\Default\Music"
-    mklink /D "C:\Users\%username%\Pictures" "C:\Users\Default\Pictures"
-	mklink /D "C:\Users\%username%\Videos" "C:\Users\Default\Videos"
+	mklink /D "C:\Users\%wpusername%\Desktop" "C:\Users\Default\Desktop"
+    mklink /D "C:\Users\%wpusername%\Documents" "C:\Users\Default\Documents"
+    mklink /D "C:\Users\%wpusername%\Downloads" "C:\Users\Default\Downloads"
+    mklink /D "C:\Users\%wpusername%\Music" "C:\Users\Default\Music"
+    mklink /D "C:\Users\%wpusername%\Pictures" "C:\Users\Default\Pictures"
+	mklink /D "C:\Users\%wpusername%\Videos" "C:\Users\Default\Videos"
 	
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\cnfg\" "C:\Users\%username%\Desktop\wp-config\" /e /i /h /c /k /y
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\docs\" "C:\Users\%username%\Documents\" /e /i /h /c /k /y
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\home\" "C:\Users\%username%\Desktop\" /e /i /h /c /k /y
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\imgs\" "C:\Users\%username%\Pictures\" /e /i /h /c /k /y
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\msic\" "C:\Users\%username%\Music\" /e /i /h /c /k /y
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\root\" "C:\Users\%username%\" /e /i /h /c /k /y
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\shdw\" "C:\Users\%username%\.shadow\" /e /i /h /c /k /y
-	@attrib +r +h "C:\users\%username%\.shadow"
-	xcopy "C:\WinPork\saved\wpstorage\wp\users\%username%\vids\" "C:\Users\%username%\Videos\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\cnfg\" "C:\Users\%wpusername%\Desktop\wp-config\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\docs\" "C:\Users\%wpusername%\Documents\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\home\" "C:\Users\%wpusername%\Desktop\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\imgs\" "C:\Users\%wpusername%\Pictures\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\msic\" "C:\Users\%wpusername%\Music\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\root\" "C:\Users\%wpusername%\" /e /i /h /c /k /y
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\shdw\" "C:\Users\%wpusername%\.shadow\" /e /i /h /c /k /y
+	@attrib +r +h "C:\users\%wpusername%\.shadow"
+	xcopy "C:\WinPork\saved\wpstorage\wp\users\%wpusername%\vids\" "C:\Users\%wpusername%\Videos\" /e /i /h /c /k /y
 	
-	echo [[92mSUCCESS[0m] User %username% has been converted to a Windows account.
+	echo [[92mSUCCESS[0m] User %wpusername% has been converted to a Windows account.
 	exit /b 0
 )

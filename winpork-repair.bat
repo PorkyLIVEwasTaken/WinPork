@@ -20,7 +20,8 @@ echo WPUCID = %wpUCID%
 
 echo [[94mSTART[0m] Preparing WinPork commands...
 echo [[96mPERFORM[0m] Recognising WinPork command aliases...
-set PATH=%PATH%;C:\WinPork\aliases
+set PATH=%PATH%;C:\WinPork\aliases;C:\WinPork\aliases\.mod
+echo [[96mPERFORM[0m] Mounting community-made Commands...
 echo [[92mSUCCESS[0m] Prepared WinPork commands!
 
 echo [[96mPERFORM[0m] Loading WinPork settings...
@@ -104,9 +105,52 @@ if exist C:\WinPork\saved\wpstorage\wp (
 )
 :continuewpstorage
 
-echo [[96mPERFORM[0m] Mounting community-made Commands...
-mklink /D C:\WinPork\.mods C:\WinPork\aliases
+echo [[96mPERFORM[0m] Check for full dirtree...
+if exist C:\WinPork\saved\wp\sys\dtr.b (
+	goto :continuedirtree
+) else (
+	mkdir C:\WinPork\saved\wpstorage\wp\acid
+	mkdir C:\WinPork\saved\wpstorage\wp\app
+	mkdir C:\WinPork\saved\wpstorage\wp\cfg
+	mkdir C:\WinPork\saved\wpstorage\wp\dev
+	mkdir C:\WinPork\saved\wpstorage\wp\dev\workbench
+	mkdir C:\WinPork\saved\wpstorage\wp\dsk
+	mkdir C:\WinPork\saved\wpstorage\wp\lib
+	mkdir C:\WinPork\saved\wpstorage\wp\lib\docs
+	mkdir C:\WinPork\saved\wpstorage\wp\lib\imgs
+	mkdir C:\WinPork\saved\wpstorage\wp\lib\msic
+	mkdir C:\WinPork\saved\wpstorage\wp\lib\vids
+	mkdir C:\WinPork\saved\wpstorage\wp\sys
+	mkdir C:\WinPork\saved\wpstorage\wp\var
+	xcopy nul C:\WinPork\saved\wpstorage\wp\sys\dtr.b
+	
+	setlocal enabledelayedexpansion
 
+	rem Clear existing symbolic links
+	del /q "C:\WinPork\saved\wpstorage\wp\dsk\*"
+
+	rem Loop through drive letters from A to Z
+	for %%I in (A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (
+		rem Determine the link name based on the drive letter
+		if "%%I"=="A" (
+			set linkName=fdA
+		) else if "%%I"=="B" (
+			set linkName=fdB
+		) else if "%%I"=="C" (
+			set linkName=sysdC
+		) else (
+			set linkName=ext%%I
+		)
+
+		rem Create the symbolic link
+		mklink "C:\WinPork\saved\wpstorage\wp\dsk\!linkName!" "%%I:\"
+	)
+
+	echo [SUCCESS] Symbolic links created for drives A: through Z:
+	endlocal
+)
+
+:continuedirtree
 echo [[92mSUCCESS[0m] WinPork Storage system ready!
 
 echo [[94mSTART[0m] Loading WinPork settings...
@@ -141,32 +185,14 @@ set wpsettings_PauseAfterBoot="true"
 :continuesettings
 echo [[92mSUCCESS[0m] WinPork Settings loaded!
 
-echo [[96mPERFORM[0m] Super-User Check...
-if exist C:\WinPork\saved\wpstorage\wp\users\su (
-    @attrib +r +h "C:\WinPork\saved\wpstorage\wp\users\su\shdw\passwd.wpshdw"
-	@attrib +r +h "C:\WinPork\saved\aether\sudo.passwd"
-	echo [[92mSUCCESS[0m] Super-User ready!
+echo [[96mPERFORM[0m] Checking for WinPork bootfile...
+if exist C:\WinPork\saved\wpstorage\wp\sys\bootr.d (
+	echo [[92mSUCCESS[0m] Bootfiles found, continuing...
+	goto :continueboot
 ) else (
-	echo [[33mWARN[0m] Super-User is missing, creating a new one...
-	mkdir C:\WinPork\saved\wpstorage\wp\users\su\cnfg
-	mkdir C:\WinPork\saved\wpstorage\wp\users\su\docs
-	mkdir C:\WinPork\saved\wpstorage\wp\users\su\home
-	mkdir C:\WinPork\saved\wpstorage\wp\users\su\imgs
-	mkdir C:\WinPork\saved\wpstorage\wp\users\su\root
-	mkdir C:\WinPork\saved\wpstorage\wp\users\su\shdw
-	mkdir C:\WinPork\saved\wpstorage\wp\users\su\trsh
-	mkdir C:\WinPork\saved\wpstorage\wp\users\su\vids
-	mkdir C:\WinPork\saved\wpstorage\wp\users\su\msic
-	set wp_su_verification="WPRTE:%random%:%random%:%random%:%random%:%random%"
-	echo %wp_su_verification% > "C:\WinPork\saved\wpstorage\wp\users\su\shdw\uuid.wpuser"
-	echo [[92mSUCCESS[0m] Super-User has been created.
-	echo=
-	set /p sudopassword=Please enter a new password for the Super-User:
-	@echo %sudopassword% > "C:\WinPork\saved\wpstorage\wp\users\su\shdw\passwd.wpshdw"
-	@echo %sudopassword% > "C:\WinPork\saved\aether\sudo.passwd"
-	@attrib +r +h "C:\WinPork\saved\wpstorage\wp\users\su\shdw\uuid.wpuser"
-	@attrib +r +h "C:\WinPork\saved\aether\sudo.passwd"
+	@cmd /k "C:\WinPork\wpsetup.bat"
 )
+:continueboot
 
 echo [[96mPERFORM[0m] Making SavLoc Read-Only...
 @attrib +r +h "C:\WinPork\saved\savloc.wpmem"
