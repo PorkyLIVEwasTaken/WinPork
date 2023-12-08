@@ -1,4 +1,4 @@
 @echo off
 
-cd C:\WinPork\saved\wpstorage\wp\
+cd C:\WinPork\wp\
 exit /b 0

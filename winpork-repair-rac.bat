@@ -11,7 +11,7 @@ echo=
 powershell write-host -fore White -back Magenta Welcome to WinPork!
 echo=
 
-if exist C:\WinPork\saved\aether\ucid.wp (
+if exist C:\WinPork\wp\aether\ucid.wp (
 	goto :continueucid
 ) else (
 	set wp_cverification=WP000:%random%:%random%:%random%:%random%:%random%
@@ -20,7 +20,7 @@ if exist C:\WinPork\saved\aether\ucid.wp (
 :continueucid
 
 echo [[96mPERFORM[0m] WinPork UCID Verification Check...
-< C:\WinPork\saved\aether\ucid.wp ( 
+< C:\WinPork\wp\aether\ucid.wp ( 
     set /p wpUCID=
   )
 
@@ -92,50 +92,50 @@ endlocal
 @schtasks /create /tn "DeleteMemoryOnShutdown" /sc ONSTART /ru "System" /tr "C:\WinPork\schtasks\delmem.bat" /f
 
 echo [[96mPERFORM[0m] Checking system writing rights for Memory...
-@fsutil file createnew "C:\WinPork\saved\memtester.wpmem" 1048576
-@del "C:\WinPork\saved\memtester.wpmem" /f
+@fsutil file createnew "C:\WinPork\wp\memtester.wpmem" 1048576
+@del "C:\WinPork\wp\memtester.wpmem" /f
 
 echo [[96mPERFORM[0m] Creating empty Memory file...
-@fsutil file createnew "C:\WinPork\saved\memory.wpmem" 0
-@attrib +r +h "C:\WinPork\saved\memory.wpmem"
+@fsutil file createnew "C:\WinPork\wp\memory.wpmem" 0
+@attrib +r +h "C:\WinPork\wp\memory.wpmem"
 
 echo [[92mSUCCESS[0m] WinPork Memory file ready!
 
 echo [[94mSTART[0m] Preparing WinPork Storage system...
-mkdir C:\WinPork\saved\aether
-@attrib +h "C:\WinPork\saved\aether"
-if exist C:\WinPork\saved\wpstorage\wp (
+mkdir C:\WinPork\wp\aether
+@attrib +h "C:\WinPork\wp\aether"
+if exist C:\WinPork\wp (
     goto continuewpstorage
 ) else (
     echo [[33mWARN[0m] No storage system has been detected, creating a new one...
-    mkdir C:\WinPork\saved\wpstorage\wp
-	attrib +h "C:\WinPork\saved\wpstorage\"
+    mkdir C:\WinPork\wp
+	attrib +h "C:\WinPork\wp\"
 )
 :continuewpstorage
 
 echo [[96mPERFORM[0m] Check for full dirtree...
-if exist C:\WinPork\saved\wp\sys\dtr.b (
+if exist C:\WinPork\wp\sys\dtr.b (
 	goto :continuedirtree
 ) else (
-	mkdir C:\WinPork\saved\wpstorage\wp\acid
-	mkdir C:\WinPork\saved\wpstorage\wp\app
-	mkdir C:\WinPork\saved\wpstorage\wp\cfg
-	mkdir C:\WinPork\saved\wpstorage\wp\dev
-	mkdir C:\WinPork\saved\wpstorage\wp\dev\workbench
-	mkdir C:\WinPork\saved\wpstorage\wp\dsk
-	mkdir C:\WinPork\saved\wpstorage\wp\lib
-	mkdir C:\WinPork\saved\wpstorage\wp\lib\docs
-	mkdir C:\WinPork\saved\wpstorage\wp\lib\imgs
-	mkdir C:\WinPork\saved\wpstorage\wp\lib\msic
-	mkdir C:\WinPork\saved\wpstorage\wp\lib\vids
-	mkdir C:\WinPork\saved\wpstorage\wp\sys
-	mkdir C:\WinPork\saved\wpstorage\wp\var
-	xcopy nul C:\WinPork\saved\wpstorage\wp\sys\dtr.b
+	mkdir C:\WinPork\wp\acid
+	mkdir C:\WinPork\wp\app
+	mkdir C:\WinPork\wp\cfg
+	mkdir C:\WinPork\wp\dev
+	mkdir C:\WinPork\wp\dev\workbench
+	mkdir C:\WinPork\wp\dsk
+	mkdir C:\WinPork\wp\lib
+	mkdir C:\WinPork\wp\lib\docs
+	mkdir C:\WinPork\wp\lib\imgs
+	mkdir C:\WinPork\wp\lib\msic
+	mkdir C:\WinPork\wp\lib\vids
+	mkdir C:\WinPork\wp\sys
+	mkdir C:\WinPork\wp\var
+	xcopy nul C:\WinPork\wp\sys\dtr.b
 	
 	setlocal enabledelayedexpansion
 
 	rem Clear existing symbolic links
-	del /q "C:\WinPork\saved\wpstorage\wp\dsk\*"
+	del /q "C:\WinPork\wp\dsk\*"
 
 	rem Loop through drive letters from A to Z
 	for %%I in (A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (
@@ -151,7 +151,7 @@ if exist C:\WinPork\saved\wp\sys\dtr.b (
 		)
 
 		rem Create the symbolic link
-		mklink "C:\WinPork\saved\wpstorage\wp\dsk\!linkName!" "%%I:\"
+		mklink "C:\WinPork\wp\dsk\!linkName!" "%%I:\"
 	)
 
 	echo [SUCCESS] Symbolic links created for drives A: through Z:
@@ -162,8 +162,8 @@ if exist C:\WinPork\saved\wp\sys\dtr.b (
 echo [[92mSUCCESS[0m] WinPork Storage system ready!
 
 echo [[94mSTART[0m] Loading WinPork settings...
-if exist C:\WinPork\saved\settings.wpsettings (
-  < C:\WinPork\saved\settings.wpsettings ( 
+if exist C:\WinPork\wp\settings.wpsettings (
+  < C:\WinPork\wp\settings.wpsettings ( 
     set /p wpsettings_LogWinPorkCommandHistory=
     set /p wpsettings_DisableWinPorkWelcomeScreen=
     set /p wpsettings_NoSavLocRead=
@@ -181,7 +181,7 @@ if exist C:\WinPork\saved\settings.wpsettings (
 	echo false
 	echo true
 	echo false
-  ) > C:\WinPork\saved\settings.wpsettings
+  ) > C:\WinPork\wp\settings.wpsettings
 set wpsettings_LogWinPorkCommandHistory="true"
 set wpsettings_DisableWinPorkWelcomeScreen="false"
 set wpsettings_NoSavLocRead="false"
@@ -194,7 +194,7 @@ set wpsettings_PauseAfterBoot="true"
 echo [[92mSUCCESS[0m] WinPork Settings loaded!
 
 echo [[96mPERFORM[0m] Checking for WinPork bootfile...
-if exist C:\WinPork\saved\wpstorage\wp\sys\bootr.d (
+if exist C:\WinPork\wp\sys\bootr.d (
 	echo [[92mSUCCESS[0m] Bootfiles found, continuing...
 	goto :continueboot
 ) else (
@@ -203,12 +203,12 @@ if exist C:\WinPork\saved\wpstorage\wp\sys\bootr.d (
 :continueboot
 
 echo [[96mPERFORM[0m] Making SavLoc Read-Only...
-@attrib +r +h "C:\WinPork\saved\savloc.wpmem"
-@attrib +r +h "C:\WinPork\saved\aether"
+@attrib +r +h "C:\WinPork\wp\savloc.wpmem"
+@attrib +r +h "C:\WinPork\wp\aether"
 
 if /i "%wpsettings_NoSavLocRead%"=="false" (
   echo [[96mPERFORM[0m] Loading Saved locations from WinPork Memory File...
-  < C:\WinPork\saved\savloc.wpmem (
+  < C:\WinPork\wp\savloc.wpmem (
     rem  
     rem  
     set /p WP_LOC=

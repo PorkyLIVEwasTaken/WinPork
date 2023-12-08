@@ -47,7 +47,7 @@ echo [[96mPERFORM[0m] Save of WinPork settings...
   echo=
   echo Enables the logging of the command history of WinPork in a .winpork file.
   echo %wpsettings_LogWinPorkCommandHistory%
-) > C:\WinPork\saved\settings\settings.wpsettings
+) > C:\WinPork\wp\settings.wpsettings
 
 echo [[96mPERFORM[0m] Preparations for WinPork reboot...
 echo User issued envreset > C:\winpork-logs\envresetlog.winpork

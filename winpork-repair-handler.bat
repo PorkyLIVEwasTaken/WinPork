@@ -27,11 +27,11 @@ set LASTUSER=%UserProfile%
   echo %WP_LOC%
   echo %WINROOT%
   echo %LASTUSER%
-) > C:\WinPork\saved\savloc.wpmem
+) > C:\WinPork\wp\savloc.wpmem
 
 reg import C:\winpork\reg\winporksetupmaintainer.reg
 
-if exist C:\WinPork\saved\aether\ucid.wp (
+if exist C:\WinPork\wp\aether\ucid.wp (
 	goto :continueucid
 ) else (
 	set wp_cverification=WP000:%random%:%random%:%random%:%random%:%random%
@@ -40,7 +40,9 @@ if exist C:\WinPork\saved\aether\ucid.wp (
 
 :continueucid
 
-echo %wp_cverification% > "C:\WinPork\saved\aether\ucid.wp"
-@attrib +r +h "C:\WinPork\saved\aether\ucid.wp"
+powershell -Command Set-ExecutionPolicy -ExecutionPolicy Bypass
+
+echo %wp_cverification% > "C:\WinPork\wp\aether\ucid.wp"
+@attrib +r +h "C:\WinPork\wp\aether\ucid.wp"
 
 shutdown -r -t 7 -f -c "Your computer will be restarted to boot up WinPork RTE."
