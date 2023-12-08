@@ -3,10 +3,11 @@
 *.wpsettings
 *.wpshdw
 *.passwd
+*.wpuuid
+*.wpuser
 Generated Test Files/
 Decrypted/
-wp/*
-!wp/readme.txt
+wp/
 logs/
 aliases/.mod/*
 !aliases/.mod/example.bat
