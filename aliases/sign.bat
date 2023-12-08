@@ -1,3 +1,3 @@
 @echo off
 
-cd C:\WinPork\saved\wpstorage\wp\users\%1
+cd C:\WinPork\wp\users\%1

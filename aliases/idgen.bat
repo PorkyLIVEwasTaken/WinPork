@@ -2,9 +2,9 @@
 set newid=WPNEW:%random%:%random%:%random%:%random%:%random%
 echo %newid%
 
-if not exist C:\WinPork\saved\idgens\ (
-	@mkdir C:\WinPork\saved\idgens
+if not exist C:\WinPork\wp\idgens\ (
+	@mkdir C:\WinPork\wp\idgens
 )
 
-@echo %newid% > C:\WinPork\saved\idgens\WPNEW-%random%.wpuid
+@echo %newid% > C:\WinPork\wp\idgens\WPNEW-%random%.wpuid
 exit /b 0
