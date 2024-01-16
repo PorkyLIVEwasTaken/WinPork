@@ -4,7 +4,7 @@ goto :page%1%
 
 echo [[33mWARN[0m] All commands are only available in the C:\ drive. Type "root" to go back to the C: hard drive.
 echo List of available WinPork commands: ([[1;95mINFO[0m] All Windows Command Prompt commands are available as well. Type "help" to display those.)'
-echo 
+echo=
 
 :page
 :page1
@@ -38,6 +38,9 @@ echo -====================================================-
 echo clearscreen
 echo Clears the WinPork teminal.
 echo -====================================================-
+echo fs / wd
+echo Changes WinPork to Fullscreen or Windowed Mode, respectively.
+echo -====================================================-
 echo wait [seconds] [quick]
 echo Let WinPork wait for a few seconds. 
 echo If no arguments are given, WinPork will ask for how long it needs to wait.
@@ -51,8 +54,11 @@ echo -====================================================-
 echo wiki
 echo Shows the WinPork wiki.
 echo -====================================================-
-echo 
-echo [[1;95mINFO[0m] HELP PAGE 1/6
+REM echo as {User} {Command}
+REM echo Runs a command as a different user.
+REM echo -====================================================-
+echo= 
+echo [[1;95mINFO[0m] HELP PAGE 1/7
 exit /b 0
 
 :page2
@@ -82,8 +88,8 @@ echo -====================================================-
 echo idgen
 echo Generates a new WinPork ID. Does not alter existing IDs.
 echo -====================================================-
-echo  
-echo [[1;95mINFO[0m] HELP PAGE 2/6
+echo=  
+echo [[1;95mINFO[0m] HELP PAGE 2/7
 exit /b 0
 
 :page3
@@ -118,8 +124,8 @@ echo -====================================================-
 echo ext {y/n}
 echo Enables / Disables the .winpork extension respectively.
 echo -====================================================-
-echo  
-echo [[1;95mINFO[0m] HELP PAGE 3/6
+echo=  
+echo [[1;95mINFO[0m] HELP PAGE 3/7
 exit /b 0
 
 :page4
@@ -139,8 +145,8 @@ echo -====================================================-
 echo scheduler
 echo Shows the Task Scheduler.
 echo -====================================================-
-echo  
-echo [[1;95mINFO[0m] HELP PAGE 4/6
+echo=  
+echo [[1;95mINFO[0m] HELP PAGE 4/7
 exit /b 0
 
 :page5
@@ -169,8 +175,8 @@ echo -====================================================-
 echo dict [Word]
 echo Returns the definition of the given word.
 echo -====================================================-
-echo  
-echo [[1;95mINFO[0m] HELP PAGE 5/6
+echo=  
+echo [[1;95mINFO[0m] HELP PAGE 5/7
 exit /b 0
 
 :page6
@@ -196,7 +202,30 @@ echo -====================================================-
 echo crypt
 echo Opens WinPork Crypt.
 echo -====================================================-
-echo  
-echo [[1;95mINFO[0m] HELP PAGE 6/6
+echo=  
+echo [[1;95mINFO[0m] HELP PAGE 6/7
 exit /b 0h
 
+:page7
+echo -====================================================-
+echo cdrom {open/close} {Drive}
+echo Opens/Closes the specified Drive Bay.
+echo -====================================================-
+echo hardmon {on/off}
+echo Turns the monitor on/off.
+echo -====================================================-
+echo mute
+echo Turns the system audio on/off.
+echo -====================================================-
+echo rasdial {dial/hangup}
+echo Dials / hangs up the given Internet connection.
+echo -====================================================-
+echo screensaver
+echo Shows the Windows screensaver.
+echo -====================================================-
+echo setdisplay {width} {height} {colors}
+echo Sets the display to the set width, height and colors.
+echo -====================================================-
+echo=  
+echo [[1;95mINFO[0m] HELP PAGE 7/7
+exit /b 0h

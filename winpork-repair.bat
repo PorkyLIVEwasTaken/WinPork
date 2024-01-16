@@ -23,11 +23,19 @@ xcopy "C:\WinPork\.wp\*" "C:\WinPork\wp\" /E /C /I /Q /H /R /K /Y
 
 echo [[94mSTART[0m] Preparing WinPork commands...
 echo [[96mPERFORM[0m] Recognising WinPork command aliases...
-set PATH=%PATH%;C:\WinPork\aliases;C:\WinPork\aliases\.mod
 echo [[96mPERFORM[0m] Mounting community-made Commands...
+set PATH=%PATH%;C:\WinPork\aliases;C:\WinPork\aliases\.mod
+echo [[96mPERFORM[0m] Recognising addon command aliases...
+set PATH=%PATH%;C:\WinPork\addons\nircmd
 echo [[92mSUCCESS[0m] Prepared WinPork commands!
 
 echo [[96mPERFORM[0m] Loading WinPork settings...
+
+echo [[96mPERFORM[0m] Size window with parms [cols=225 lines=60]...
+mode con: cols=208 lines=54 
+nircmd.exe win -style ititle "WinPork RTE" 0x00C00000
+nircmd.exe win -style ititle "WinPork RTE" 0x00040000
+nircmd.exe win max ititle "WinPork RTE"
 
 REM This was an attempt to put the WinPork settings in the registry, you can try to make it work :P
 

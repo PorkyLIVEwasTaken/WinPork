@@ -28,7 +28,6 @@ if exist C:\WinPork\wp\users\su (
 	echo [[92mSUCCESS[0m] Super-User has been created.
 	@echo %sudopassword% > "C:\WinPork\wp\users\su\shdw\passwd.wpshdw"
 	@echo %sudopassword% > "C:\WinPork\wp\aether\sudo.passwd"
-	@attrib +r +h "C:\WinPork\wp\users\su\shdw\uuid.wpuser"
 	@attrib +r +h "C:\WinPork\wp\aether\sudo.passwd"
 
 	echo [[96mPERFORM[0m] Creation of first User...

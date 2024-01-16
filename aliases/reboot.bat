@@ -11,8 +11,8 @@ goto mode%1
 :modenormal
 echo [[94mSTART[0m] Reboot to Windows
 
-echo [[1;95mINFO[0m] The system will be rebooted shortly...
-shutdown -r -t 0 -f
+echo [[1;95mINFO[0m] The system will be rebooted into Windows shortly...
+shutdown /r /f /t 0
 exit /b 0
 
 :modesafe

@@ -34,8 +34,8 @@ mkdir C:\WinPork\wp\users\%wpusername%\msic
 set wp_verification=WPRTE:%random%:%random%:%random%:%random%:%random%
 echo %wp_verification% > "C:\WinPork\wp\users\%wpusername%\shdw\uuid.wpuser"
 @echo %password% > "C:\WinPork\wp\users\%wpusername%\shdw\passwd.wpshdw"
-@attrib +r +h C:\WinPork\wp\users\%wpusername%\shdw/passwd.wpshdw
-@attrib +r +h C:\WinPork\wp\users\%wpusername%\shdw/uuid.wpuser
+REM @attrib +r +h C:\WinPork\wp\users\%wpusername%\shdw/passwd.wpshdw
+REM @attrib +r +h C:\WinPork\wp\users\%wpusername%\shdw/uuid.wpuser
 echo [[92mSUCCESS[0m] User %wpusername% has been created.
 endlocal
 exit /b 0
