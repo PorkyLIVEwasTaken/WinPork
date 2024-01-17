@@ -220,12 +220,6 @@ echo -====================================================-
 echo rasdial {dial/hangup}
 echo Dials / hangs up the given Internet connection.
 echo -====================================================-
-echo screensaver
-echo Shows the Windows screensaver.
-echo -====================================================-
-echo setdisplay {width} {height} {colors}
-echo Sets the display to the set width, height and colors.
-echo -====================================================-
 echo=  
 echo [[1;95mINFO[0m] HELP PAGE 7/7
 exit /b 0h
