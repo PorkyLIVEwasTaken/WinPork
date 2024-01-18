@@ -1,5 +1,7 @@
 @echo off
+echo=
 powershell write-host -fore White -back Magenta WinPork Setup
+echo=
 title WinPork Setup
 echo [[96mPERFORM[0m] Super-User Check...
 if exist C:\WinPork\wp\users\su (
@@ -7,6 +9,7 @@ if exist C:\WinPork\wp\users\su (
 	@attrib +r +h "C:\WinPork\wp\aether\sudo.passwd"
 	echo [[92mSUCCESS[0m] Super-User ready!
 ) else (
+	setlocal enabledelayedexpansion
 	echo [[33mWARN[0m] Super-User is missing, creating a new one...
 	mkdir C:\WinPork\wp\users\su\cnfg
 	mkdir C:\WinPork\wp\users\su\docs
@@ -37,7 +40,9 @@ if exist C:\WinPork\wp\users\su (
 	set /p wp_newusername=What would you like to be the name of the new user? 
 	
 	if wp_newusername=="skip" (
-		echo Enter the password for this secondary user.
+		goto :continuesetup1
+	) else (
+	echo Enter the password for this secondary user.
 		echo If you forget the password of any secondary user, you can log into the Super-User to reset the password for this User.
 		set /p password=What would you like to be the password of the new user? 
 		mkdir C:\WinPork\wp\users\%wp_newusername%
@@ -57,11 +62,15 @@ if exist C:\WinPork\wp\users\su (
 		@attrib +r +h C:\WinPork\wp\users\%wp_newusername%\shdw\uuid.wpuser
 		echo [[92mSUCCESS[0m] User %wp_newusername% has been created.
 		goto :continuesetup1
-	) else (
-		goto :continuesetup1
+		endlocal
 	)
 )
 :continuesetup1
 
 copy nul C:\WinPork\wp\sys\bootr.d
-@cmd /k "C:\WinPork\winpork-repair.bat"
+
+if /%RAC% == 1 (
+	@cmd /k "C:\WinPork\winpork-repair-rac.bat"
+) else (
+	@cmd /k "C:\WinPork\winpork-repair.bat"
+)

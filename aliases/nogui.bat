@@ -38,6 +38,9 @@ echo -====================================================-
 echo clearscreen
 echo Clears the WinPork teminal.
 echo -====================================================-
+echo settings [...]
+echo Runs the settings wizard.
+echo -====================================================-
 echo fs / wd
 echo Changes WinPork to Fullscreen or Windowed Mode, respectively.
 echo -====================================================-
@@ -220,6 +223,12 @@ echo -====================================================-
 echo rasdial {dial/hangup}
 echo Dials / hangs up the given Internet connection.
 echo -====================================================-
+<<<<<<< Updated upstream
+=======
+echo display {width} {height} {colors}
+echo Sets the display to the set width, height and colors.
+echo -====================================================-
+>>>>>>> Stashed changes
 echo=  
 echo [[1;95mINFO[0m] HELP PAGE 7/7
 exit /b 0h

@@ -1,7 +1,7 @@
 @echo off
 echo [[94mSTART[0m] Boot to File
 
-if %wpsettings_LogWinPorkCommandHistory%=="true" (
+if exist C:\WinPork\wp\var\lwpch.b (
   mkdir C:\WinPork\logs
   doskey /history > "C:\WinPork\logs\%DATE%_%TIME%.wplog"
 )

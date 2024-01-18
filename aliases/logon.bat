@@ -15,6 +15,10 @@ if exist C:\WinPork\wp\users\%logonusername% (
     goto :usernotexist
 )
 :usernameexists
+if %logonusername% == [] (
+	echo Username is empty!
+	goto :usernotexist
+)
 
 :incorrectpassword
 set /p logonpassword=Password: 

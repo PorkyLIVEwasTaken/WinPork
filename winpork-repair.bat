@@ -2,7 +2,13 @@
 title WinPork RTE Initializer
 
 REM Insert WinPork Version here, winpork.wpver is deprecated.
-set wp_ver=1.1
+set wp_ver=1.2
+
+echo [[96mPERFORM[0m] Size window with parms [cols=225 lines=60]...
+mode con: cols=208 lines=54 
+nircmd.exe win -style ititle "WinPork RTE" 0x00C00000
+nircmd.exe win -style ititle "WinPork RTE" 0x00040000
+nircmd.exe win max ititle "WinPork RTE"
 
 echo WinPork RTE succesfully booted up on version %wp_ver% > C:\winpork-logs\bootlog_%date%_%time%.winpork
 echo [[92mSUCCESS[0m] WinPork RTE bootup on version %wp_ver%
@@ -18,64 +24,142 @@ echo [[96mPERFORM[0m] WinPork UCID Verification Check...
 
 echo WPUCID = %wpUCID%
 
+echo [[96mPERFORM[0m] Check for full dirtree...
+if exist C:\WinPork\wp\sys\dtr.b (
+	goto continuedirtree
+) else (
+	mkdir C:\WinPork\wp\acid
+	mkdir C:\WinPork\wp\app
+	mkdir C:\WinPork\wp\cfg
+	mkdir C:\WinPork\wp\dev
+	mkdir C:\WinPork\wp\dev\workbench
+	mkdir C:\WinPork\wp\dsk
+	mkdir C:\WinPork\wp\lib
+	mkdir C:\WinPork\wp\lib\docs
+	mkdir C:\WinPork\wp\lib\imgs
+	mkdir C:\WinPork\wp\lib\msic
+	mkdir C:\WinPork\wp\lib\vids
+	mkdir C:\WinPork\wp\sys
+	mkdir C:\WinPork\wp\var
+	mkdir C:\WinPork\wp\var\boot
+	mkdir C:\WinPork\wp\var\boot\chk
+	copy nul C:\WinPork\wp\sys\dtr.b
+	
+	setlocal enabledelayedexpansion
+
+	rem Clear existing symbolic links
+	del /q "C:\WinPork\wp\dsk\*"
+
+	rem Loop through drive letters from A to Z
+	for %%I in (A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (
+		rem Determine the link name based on the drive letter
+		if "%%I"=="A" (
+			set linkName=fdA
+		) else if "%%I"=="B" (
+			set linkName=fdB
+		) else if "%%I"=="C" (
+			set linkName=sysdC
+		) else (
+			set linkName=ext%%I
+		)
+
+		rem Create the symbolic link
+		mklink "C:\WinPork\wp\dsk\!linkName!" "%%I:\"
+	)
+
+	echo [SUCCESS] Symbolic links created for drives A: through Z:
+	endlocal
+	goto continuedirtree
+)
+
+:continuedirtree
+echo [[92mSUCCESS[0m] WinPork Storage system ready!
+
+echo [[96mPERFORM[0m] Checking for WinPork bootfile...
+if exist C:\WinPork\wp\sys\bootr.d (
+	echo [[92mSUCCESS[0m] Bootfiles found, continuing...
+	goto continueboot
+) else (
+	@cmd /k "C:\WinPork\wpsetup.bat"
+	goto continueboot
+)
+:continueboot
+
+echo [[94mSTART[0m] Loading WinPork settings...
+if exist C:\WinPork\wp\sys\setpfl.b (
+  goto continuesettings
+) else (
+  echo [[33mWARN[0m] No settings files have been detected, returning to default settings...
+  copy nul C:\WinPork\wp\var\wps_lwpch.b
+  REM copy nul C:\WinPork\wp\var\boot\wps_dwws.b
+  REM copy nul C:\WinPork\wp\var\boot\wps_nSLr.b
+  REM copy nul C:\WinPork\wp\var\boot\wps_uWPt.b
+  REM copy nul C:\WinPork\wp\var\boot\wps_pab.b
+  REM copy nul C:\WinPork\wp\var\boot\wps_nml.b
+  REM copy nul C:\WinPork\wp\var\boot\chk\wps_SOSc.b
+  REM copy nul C:\WinPork\wp\var\boot\chk\wps_SCPUc.b
+  REM copy nul C:\WinPork\wp\var\boot\chk\wps_SRAMc.b
+  REM copy nul C:\WinPork\wp\var\boot\chk\wps_Snetc.b
+  copy nul C:\WinPork\wp\sys\bootr.d
+  
+REM set wpsettings_LogWinPorkCommandHistory="true"
+REM set wpsettings_DisableWinPorkWelcomeScreen="false"
+REM set wpsettings_NoSavLocRead="false"
+REM set wpsettings_UseWP_Theme="true"
+REM set wpsettings_PauseAfterBoot="false"
+REM set wpsettings_NoModLoading="false"
+REM set wpsettings_SkipOS_check="false"
+REM set wpsettings_SkipCPU_check="false"
+REM set wpsettings_SkipRAM_check="false"
+REM set wpsettings_SkipNetworkCheck="false"
+
+  goto continuesettings
+)
+:continuesettings
+echo [[92mSUCCESS[0m] WinPork Settings loaded!
+
 echo [[96mPERFORM[0m] Importing predefined files and directories to file system...
 xcopy "C:\WinPork\.wp\*" "C:\WinPork\wp\" /E /C /I /Q /H /R /K /Y
 
 echo [[94mSTART[0m] Preparing WinPork commands...
 echo [[96mPERFORM[0m] Recognising WinPork command aliases...
 echo [[96mPERFORM[0m] Mounting community-made Commands...
-set PATH=%PATH%;C:\WinPork\aliases;C:\WinPork\aliases\.mod
+set PATH=%PATH%;C:\WinPork\aliases
+
+if not exist C:\WinPork\wp\var\boot\wps_nml.b (
+	set PATH=%PATH%;C:\WinPork\aliases\.mod
+	goto continuesavloc
+) else (
+  echo [[33mWARN[0m] Settings dictated that no community-made Commands should be mounted, skipping...
+  goto continuesavloc
+)
+:continuesavloc
+
 echo [[96mPERFORM[0m] Recognising addon command aliases...
 set PATH=%PATH%;C:\WinPork\addons\nircmd
 echo [[92mSUCCESS[0m] Prepared WinPork commands!
 
-echo [[96mPERFORM[0m] Loading WinPork settings...
-
-echo [[96mPERFORM[0m] Size window with parms [cols=225 lines=60]...
-mode con: cols=208 lines=54 
-nircmd.exe win -style ititle "WinPork RTE" 0x00C00000
-nircmd.exe win -style ititle "WinPork RTE" 0x00040000
-nircmd.exe win max ititle "WinPork RTE"
-
-REM This was an attempt to put the WinPork settings in the registry, you can try to make it work :P
-
-REM setlocal
-REM set "RegKey=HKLM\SOFTWARE\WinPork"
-REM REM Use the "reg" command to check if the key exists
-REM reg query "%RegKey%" >nul 2>&1
-REM if %errorlevel% equ 0 (
-    REM echo The registry key %RegKey% exists.
-	REM goto :continuesettingreg
-REM ) else (
-    REM echo The registry key %RegKey% does not exist, importing WinPork Settings template...
-	REM reg import C:\WinPork\reg\WinPorkSettingsTemplate.reg
-	REM goto :continuesettingreg
-REM )
-REM :continuesettingreg
-REM endlocal
-
-REM PAUSE
-
-REM :: Call the function with different registry values
-REM @call C:\WinPork\winporkregread.bat "HKLM\SOFTWARE\WinPork" "DisableWinPorkWelcomeScreen"
-REM @call C:\WinPork\winporkregread.bat "HKLM\SOFTWARE\WinPork" "LogWinPorkCommandHistory"
-REM @call C:\WinPork\winporkregread.bat "HKLM\SOFTWARE\WinPork" "NoSavLocRead"
-REM @call C:\WinPork\winporkregread.bat "HKLM\SOFTWARE\WinPork" "PreventSaveFolderCreation"
-REM :: Display the environment variables
-REM echo wpsettings_DisableWinPorkWelcomeScreen is %wpsettings_DisableWinPorkWelcomeScreen%
-REM echo wpsettings_LogWinPorkCommandHistory is %wpsettings_LogWinPorkCommandHistory%
-REM echo wpsettings_NoSavLocRead is %wpsettings_NoSavLocRead%
-REM echo wpsettings_PreventSaveFolderCreation is %wpsettings_PreventSaveFolderCreation%
-REM endlocal
-
-REM PAUSE
-
+if not exist C:\WinPork\wp\var\boot\chk\wps_SOSc.b (
 echo [[96mPERFORM[0m] WinPork Operating System Check...
 wmic os get ostype, buildnumber, osarchitecture, oslanguage, status, lastbootuptime, version, windowsdirectory
+goto continueOS
+) else (
+echo [[33mWARN[0m] Settings dictated that Operating System should not be checked, skipping...
+goto continueOS
+)
+:continueOS
 
+if not exist C:\WinPork\wp\var\boot\chk\wps_SCPUc.b (
 echo [[96mPERFORM[0m] WinPork CPU Check...
 wmic cpu get deviceid, numberofcores, maxclockspeed
+goto continueCPU
+) else (
+echo [[33mWARN[0m] Settings dictated that CPU should not be checked, skipping...
+goto continueCPU
+)
+:continueCPU
 
+if not exist C:\WinPork\wp\var\boot\chk\wps_SRAMc.b (
 echo [[94mSTART[0m] WinPork Memory preparation...
 
 echo [[96mPERFORM[0m] Checking available storage space for Memory...
@@ -103,6 +187,12 @@ echo [[96mPERFORM[0m] Creating empty Memory file...
 @attrib +r +h "C:\WinPork\wp\memory.wpmem"
 
 echo [[92mSUCCESS[0m] WinPork Memory file ready!
+goto continueRAM
+) else (
+echo [[33mWARN[0m] Settings dictated that RAM should not be checked, skipping...
+goto continueRAM
+)
+:continueRAM
 
 echo [[94mSTART[0m] Preparing WinPork Storage system...
 mkdir C:\WinPork\wp\aether
@@ -115,100 +205,11 @@ if exist C:\WinPork\wp (
 )
 :continuewpstorage
 
-echo [[96mPERFORM[0m] Check for full dirtree...
-if exist C:\WinPork\wp\sys\dtr.b (
-	goto :continuedirtree
-) else (
-	mkdir C:\WinPork\wp\acid
-	mkdir C:\WinPork\wp\app
-	mkdir C:\WinPork\wp\cfg
-	mkdir C:\WinPork\wp\dev
-	mkdir C:\WinPork\wp\dev\workbench
-	mkdir C:\WinPork\wp\dsk
-	mkdir C:\WinPork\wp\lib
-	mkdir C:\WinPork\wp\lib\docs
-	mkdir C:\WinPork\wp\lib\imgs
-	mkdir C:\WinPork\wp\lib\msic
-	mkdir C:\WinPork\wp\lib\vids
-	mkdir C:\WinPork\wp\sys
-	mkdir C:\WinPork\wp\var
-	xcopy nul C:\WinPork\wp\sys\dtr.b
-	
-	setlocal enabledelayedexpansion
-
-	rem Clear existing symbolic links
-	del /q "C:\WinPork\wp\dsk\*"
-
-	rem Loop through drive letters from A to Z
-	for %%I in (A B C D E F G H I J K L M N O P Q R S T U V W X Y Z) do (
-		rem Determine the link name based on the drive letter
-		if "%%I"=="A" (
-			set linkName=fdA
-		) else if "%%I"=="B" (
-			set linkName=fdB
-		) else if "%%I"=="C" (
-			set linkName=sysdC
-		) else (
-			set linkName=ext%%I
-		)
-
-		rem Create the symbolic link
-		mklink "C:\WinPork\wp\dsk\!linkName!" "%%I:\"
-	)
-
-	echo [SUCCESS] Symbolic links created for drives A: through Z:
-	endlocal
-)
-
-:continuedirtree
-echo [[92mSUCCESS[0m] WinPork Storage system ready!
-
-echo [[94mSTART[0m] Loading WinPork settings...
-if exist C:\WinPork\wp\settings.wpsettings (
-  < C:\WinPork\wp\settings.wpsettings ( 
-    set /p wpsettings_LogWinPorkCommandHistory=
-    set /p wpsettings_DisableWinPorkWelcomeScreen=
-    set /p wpsettings_NoSavLocRead=
-	set /p wpsettings_PreventSaveFolderCreation=
-	set /p wpsettings_UseWP_Theme=
-	set /p wpsettings_PauseAfterBoot=
-  )
-  goto continuesettings
-) else (
-  echo [[33mWARN[0m] No settings file has been detected, creating a new one...
-  (
-    echo true
-    echo false
-    echo false
-	echo false
-	echo true
-	echo false
-  ) > C:\WinPork\wp\settings.wpsettings
-set wpsettings_LogWinPorkCommandHistory="true"
-set wpsettings_DisableWinPorkWelcomeScreen="false"
-set wpsettings_NoSavLocRead="false"
-set wpsettings_PreventSaveFolderCreation="false"
-set wpsettings_UseWP_Theme="true"
-set wpsettings_PauseAfterBoot="true"
-  goto continuesettings
-)
-:continuesettings
-echo [[92mSUCCESS[0m] WinPork Settings loaded!
-
-echo [[96mPERFORM[0m] Checking for WinPork bootfile...
-if exist C:\WinPork\wp\sys\bootr.d (
-	echo [[92mSUCCESS[0m] Bootfiles found, continuing...
-	goto :continueboot
-) else (
-	@cmd /k "C:\WinPork\wpsetup.bat"
-)
-:continueboot
-
 echo [[96mPERFORM[0m] Making SavLoc Read-Only...
 @attrib +r +h "C:\WinPork\wp\savloc.wpmem"
 @attrib +r +h "C:\WinPork\wp\aether"
 
-if /i "%wpsettings_NoSavLocRead%"=="false" (
+if not exist C:\WinPork\wp\var\boot\wps_nSLr.b (
   echo [[96mPERFORM[0m] Loading Saved locations from WinPork Memory File...
   < C:\WinPork\wp\savloc.wpmem (
     rem  
@@ -245,13 +246,13 @@ echo [[96mPERFORM[0m] WinPork startup regkey cleanup...
 reg import C:\winpork\reg\winporksetupcloser.reg
 echo [[92mSUCCESS[0m] WinPork disables at reboot!
 
-if "%wpsettings_DisableWinPorkWelcomeScreen%"=="false" (
+if not exist "C:\WinPork\wp\var\boot\wps_dwws.b" (
   powershell -File "C:\WinPork\welcome.ps1"
-  goto continuewelcomescreen
+  rem goto continuewelcomescreen
 )
 :continuewelcomescreen
 
-if "%wpsettings_PauseAfterBoot%"=="true" (
+if exist C:\WinPork\wp\var\boot\wps_pab.b (
 	PAUSE
 )
 

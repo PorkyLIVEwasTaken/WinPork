@@ -5,7 +5,7 @@ if %RAC% == 1 (
 	goto :RAC
 )
 
-if %wpsettings_LogWinPorkCommandHistory%=="true" (
+if exist C:\WinPork\wp\var\lwpch.b (
   mkdir C:\WinPork\logs
   doskey /history > "C:\WinPork\logs\%DATE%_%TIME%.wplog"
 )
