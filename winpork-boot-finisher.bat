@@ -58,8 +58,7 @@ if %logonpassword% == %verifypassword% (
 cls
 title WinPork RTE
 powershell write-host -fore White -back Magenta Welcome to WinPork!
-echo=
-echo Welcome to WinPork RTE!
+echo Version: %wp_ver%
 echo=
 echo The programs included with the WinPork system are free software; the exact distribution terms for each program are described in the individual files in C:\WinPork\LICENSE.
 echo WinPork comes with ABSOLUTELY NO WARRANTY, and the creators are NOT responsible for any damages done by using WinPork, to the extend permitted by applicable law.

@@ -2,7 +2,7 @@
 title WinPork RTE Initializer
 
 REM Insert WinPork Version here, winpork.wpver is deprecated.
-set wp_ver=1.1
+set wp_ver=1.3RAC
 
 echo WinPork RTE succesfully booted up on version %wp_ver% > C:\winpork-logs\bootlog_%date%_%time%.winpork
 echo [[92mSUCCESS[0m] WinPork RTE bootup on version %wp_ver%

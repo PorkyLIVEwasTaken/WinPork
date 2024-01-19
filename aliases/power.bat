@@ -8,7 +8,7 @@ if exist C:\WinPork\wp\var\lwpch.b (
 goto mode%1%
 
 :mode
-choice /c ORKSX /m "Do you want to shutdown (O), reboot (R), reboot WinPork (K), or reboot to Safe Mode (S)? (Cancel = X)"
+choice /c ORSFKX /m "Do you want to shutdown (O), or reboot to Windows (R), to Safe Mode (S), to Firmware (F) or to WinPork (K)? (Cancel = X)"
 goto gui%errorlevel%
 exit /b 0
 
@@ -53,6 +53,7 @@ exit /b 0
 
 :mode-firmware
 :mode-fw
+:gui4
 echo [[94mSTART[0m] Reboot to Firmware
 echo [[1;95mINFO[0m] The system will be rebooted to firmware shortly...
 reg import C:\winpork\reg\winporksafemodeoff.reg
@@ -60,12 +61,14 @@ shutdown /r /fw /f /t 0
 exit /b 0
 
 :mode-k
+:gui5
 echo [[94mSTART[0m] Reboot to WinPork
 echo [[1;95mINFO[0m] The system will be rebooted to WinPork shortly...
-shutdown /r /fw /f /t 0
+reg import C:\winpork\reg\winporksetupmaintainer.reg
+shutdown /r /f /t 0
 exit /b 0
 
 
 
-:gui4
+:gui6
 exit /b 0

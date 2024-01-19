@@ -2,13 +2,7 @@
 title WinPork RTE Initializer
 
 REM Insert WinPork Version here, winpork.wpver is deprecated.
-set wp_ver=1.2
-
-echo [[96mPERFORM[0m] Size window with parms [cols=225 lines=60]...
-mode con: cols=208 lines=54 
-nircmd.exe win -style ititle "WinPork RTE" 0x00C00000
-nircmd.exe win -style ititle "WinPork RTE" 0x00040000
-nircmd.exe win max ititle "WinPork RTE"
+set wp_ver=OpenPorkerOS-WPRTE-1.3
 
 echo WinPork RTE succesfully booted up on version %wp_ver% > C:\winpork-logs\bootlog_%date%_%time%.winpork
 echo [[92mSUCCESS[0m] WinPork RTE bootup on version %wp_ver%
@@ -138,6 +132,12 @@ if not exist C:\WinPork\wp\var\boot\wps_nml.b (
 echo [[96mPERFORM[0m] Recognising addon command aliases...
 set PATH=%PATH%;C:\WinPork\addons\nircmd
 echo [[92mSUCCESS[0m] Prepared WinPork commands!
+
+echo [[96mPERFORM[0m] Size window with parms [cols=225 lines=60]...
+mode con: cols=208 lines=54 
+nircmd.exe win -style ititle "WinPork RTE" 0x00C00000
+nircmd.exe win -style ititle "WinPork RTE" 0x00040000
+nircmd.exe win max ititle "WinPork RTE"
 
 if not exist C:\WinPork\wp\var\boot\chk\wps_SOSc.b (
 echo [[96mPERFORM[0m] WinPork Operating System Check...
