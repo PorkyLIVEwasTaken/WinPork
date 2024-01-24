@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 
 if %RAC% == 1 (
 	goto :RAC
@@ -32,7 +33,8 @@ if %logonpassword% == %verifypassword% (
     cls
     powershell write-host -fore White -back Magenta Welcome to WinPork!
     echo Type "nogui" for a list of available WinPork commands.
-    exit /b 0
+    endlocal
+	exit /b 0
 ) else (
     echo Incorrect password!
 	goto :incorrectpassword
@@ -40,4 +42,5 @@ if %logonpassword% == %verifypassword% (
 
 :RAC
 echo [[91mFAIL[0m] This command is not available in Run As Companion!
+endlocal
 exit /b 0

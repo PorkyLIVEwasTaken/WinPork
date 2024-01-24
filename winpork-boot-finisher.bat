@@ -17,20 +17,20 @@ title WinPork RTE
 echo [[92mSUCCESS[0m] Prepared WinPork command center!
 cls
 
-
-
-echo [[96mPERFORM[0m] Log in system...
 title WinPork RTE (Use ALT+F4 to reboot to Windows...)
+
+setlocal enabledelayedexpansion
+echo [[96mPERFORM[0m] Log in system...
 :usernotexist
 set /p logonusername=Username: 
-if exist C:\WinPork\wp\users\%logonusername% (
+if exist C:\WinPork\wp\users\!logonusername! (
     goto :usernameexists
 ) else (
     echo User does not exist!
     goto :usernotexist
 )
 :usernameexists
-if %logonusername% == [] (
+if !logonusername!==[] (
 	echo Username is empty!
 	goto :usernotexist
 )
@@ -41,20 +41,22 @@ set /p logonpassword=Password:
 set "verifypassword="
 
 rem Read the content of the file into the variable
-< "C:\WinPork\wp\users\%logonusername%\shdw\passwd.wpshdw" set /p verifypassword=
+< "C:\WinPork\wp\users\!logonusername!\shdw\passwd.wpshdw" set /p verifypassword=
 
-if %logonpassword% == %verifypassword% (
+if !logonpassword! == !verifypassword! (
     goto logoncontinue
 ) else (
     echo Incorrect password!
 	goto :incorrectpassword
 )
 
-< "C:\WinPork\wp\users\%logonusername%\shdw\uuid.wpuser" (
+< "C:\WinPork\wp\users\!logonusername!\shdw\uuid.wpuser" (
 	set /p wpUUID=
 )
 
 :logoncontinue
+endlocal
+
 cls
 title WinPork RTE
 powershell write-host -fore White -back Magenta Welcome to WinPork!
