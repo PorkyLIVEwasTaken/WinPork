@@ -11,6 +11,12 @@ echo=
 powershell write-host -fore White -back Magenta Welcome to WinPork!
 echo=
 
+echo [[94mSTART[0m] Activating WinPork auto-disable on reboot...
+echo [[96mPERFORM[0m] WinPork startup regkey cleanup...
+reg import C:\winpork\reg\winporksetupcloser.reg
+set quitreason=CRASH
+echo [[92mSUCCESS[0m] WinPork disables at reboot!
+
 echo [[96mPERFORM[0m] WinPork UCID Verification Check...
 < C:\WinPork\wp\aether\ucid.wp ( 
     set /p wpUCID=
@@ -22,21 +28,7 @@ echo [[96mPERFORM[0m] Check for full dirtree...
 if exist C:\WinPork\wp\sys\dtr.b (
 	goto continuedirtree
 ) else (
-	mkdir C:\WinPork\wp\acid
-	mkdir C:\WinPork\wp\app
-	mkdir C:\WinPork\wp\cfg
-	mkdir C:\WinPork\wp\dev
-	mkdir C:\WinPork\wp\dev\workbench
-	mkdir C:\WinPork\wp\dsk
-	mkdir C:\WinPork\wp\lib
-	mkdir C:\WinPork\wp\lib\docs
-	mkdir C:\WinPork\wp\lib\imgs
-	mkdir C:\WinPork\wp\lib\msic
-	mkdir C:\WinPork\wp\lib\vids
-	mkdir C:\WinPork\wp\sys
-	mkdir C:\WinPork\wp\var
-	mkdir C:\WinPork\wp\var\boot
-	mkdir C:\WinPork\wp\var\boot\chk
+	xcopy C:\WinPork\templates\wp C:\WinPork\wp /E /C /I /Q /H /R /K /Y
 	copy nul C:\WinPork\wp\sys\dtr.b
 	
 	setlocal enabledelayedexpansion
@@ -62,6 +54,16 @@ if exist C:\WinPork\wp\sys\dtr.b (
 	)
 
 	echo [SUCCESS] Symbolic links created for drives A: through Z:
+
+	echo [.ShellClassInfo] > C:\WinPork\wp\desktop.ini
+	echo IconResource=C:\Windows\System32\imageres.dll,29 >> C:\WinPork\wp\desktop.ini
+	echo [ViewState] >> C:\WinPork\wp\desktop.ini
+	echo Mode= >> C:\WinPork\wp\desktop.ini
+	echo Vid= >> C:\WinPork\wp\desktop.ini
+	echo FolderType=Generic >> C:\WinPork\wp\desktop.ini
+	@attrib +r +h +s C:\WinPork\wp\desktop.ini
+	@attrib +s C:\WinPork\wp\
+
 	endlocal
 	goto continuedirtree
 )
@@ -94,7 +96,22 @@ if exist C:\WinPork\wp\sys\setpfl.b (
   REM copy nul C:\WinPork\wp\var\boot\chk\wps_SCPUc.b
   REM copy nul C:\WinPork\wp\var\boot\chk\wps_SRAMc.b
   REM copy nul C:\WinPork\wp\var\boot\chk\wps_Snetc.b
+  copy nul C:\WinPork\wp\var\boot\wps_ufsm.b
   copy nul C:\WinPork\wp\sys\bootr.d
+  if not exist C:\WinPork\wp\var\boot\chk\minram.int (
+	echo 16777216 > C:\WinPork\wp\var\boot\chk\minram.int
+  )
+
+  if not exist C:\WinPork\wp\var\boot\rooted.b (
+	copy nul C:\WinPork\wp\root.root
+	attrib +r +h +s C:\WinPork\wp\root.root
+	echo C:\WinPork\wp\ > C:\WinPork\wp\sys\wp.loc
+	attrib +r +h +s C:\WinPork\wp\sys\wp.loc
+  )
+
+  < C:\WinPork\wp\var\boot\chk\minram.int (
+    set /p MINRAM=
+  )
   
 REM set wpsettings_LogWinPorkCommandHistory="true"
 REM set wpsettings_DisableWinPorkWelcomeScreen="false"
@@ -106,8 +123,11 @@ REM set wpsettings_SkipOS_check="false"
 REM set wpsettings_SkipCPU_check="false"
 REM set wpsettings_SkipRAM_check="false"
 REM set wpsettings_SkipNetworkCheck="false"
+REM set wpsettings_UseFullScreenMode="true"
 
-  goto continuesettings
+copy nul C:\WinPork\wp\sys\setpfl.b
+
+goto continuesettings
 )
 :continuesettings
 echo [[92mSUCCESS[0m] WinPork Settings loaded!
@@ -166,7 +186,7 @@ echo [[96mPERFORM[0m] Checking available storage space for Memory...
 setlocal enabledelayedexpansion
 
 REM Replace "C:" with the drive or directory you want to check
-set "drive=C:\WinPork\wp\"
+set "drive=C:\WinPork\wp\sys\core\RAM\"
 
 for /f "tokens=2,3" %%a in ('dir !drive! ^| find /i "bytes free"') do (
     set "freeSpace=%%a"
@@ -179,12 +199,12 @@ endlocal
 @schtasks /create /tn "DeleteMemoryOnShutdown" /sc ONSTART /ru "System" /tr "C:\WinPork\schtasks\delmem.bat" /f
 
 echo [[96mPERFORM[0m] Checking system writing rights for Memory...
-@fsutil file createnew "C:\WinPork\wp\memtester.wpmem" 1048576
-@del "C:\WinPork\wp\memtester.wpmem" /f
+@fsutil file createnew "C:\WinPork\wp\sys\core\RAM\memtester.wpmem" 16777216
+@del "C:\WinPork\wp\sys\core\RAM\memtester.wpmem" /f
 
 echo [[96mPERFORM[0m] Creating empty Memory file...
-@fsutil file createnew "C:\WinPork\wp\memory.wpmem" 0
-@attrib +r +h "C:\WinPork\wp\memory.wpmem"
+@fsutil file createnew "C:\WinPork\wp\sys\core\RAM\core.mem" 0
+@attrib +r +h "C:\WinPork\wp\sys\core\RAM\core.mem"
 
 echo [[92mSUCCESS[0m] WinPork Memory file ready!
 goto continueRAM
@@ -209,7 +229,7 @@ echo [[96mPERFORM[0m] Making SavLoc Read-Only...
 @attrib +r +h "C:\WinPork\wp\savloc.wpmem"
 @attrib +r +h "C:\WinPork\wp\aether"
 
-if not exist C:\WinPork\wp\var\boot\wps_nSLr.b (
+if not exist C:\WinPork\wp\var\boot\chk\wps_nSLr.b (
   echo [[96mPERFORM[0m] Loading Saved locations from WinPork Memory File...
   < C:\WinPork\wp\savloc.wpmem (
     rem  
@@ -227,24 +247,21 @@ if not exist C:\WinPork\wp\var\boot\wps_nSLr.b (
 
 echo [[94mSTART[0m] Network check...
 echo [[96mPERFORM[0m] Local loopback test to check network card health...
-@ping 127.0.0.1
+if not exist C:\WinPork\wp\var\boot\chk\wps_Snetc.b (
+	@ping 127.0.0.1
 
-if %errorlevel% == 0 (
-	echo [[92mSUCCESS[0m] Network card ready!
-	goto :continuenetwork
-) else (
-	echo [[91mFAIL[0m] Local loopback returned one or multiple packet losses, consider replacing your network card.
-	timeout /t 5
-	goto :continuenetwork
+	if %errorlevel% == 0 (
+		echo [[92mSUCCESS[0m] Network card ready!
+		goto :continuenetwork
+	) else (
+		echo [[91mFAIL[0m] Local loopback returned one or multiple packet losses, consider replacing your network card.
+		timeout /t 5
+		goto :continuenetwork
+	)
 )
 :continuenetwork
 
 set RAC=0
-
-echo [[94mSTART[0m] Activating WinPork auto-disable on reboot...
-echo [[96mPERFORM[0m] WinPork startup regkey cleanup...
-reg import C:\winpork\reg\winporksetupcloser.reg
-echo [[92mSUCCESS[0m] WinPork disables at reboot!
 
 if not exist "C:\WinPork\wp\var\boot\wps_dwws.b" (
   powershell -File "C:\WinPork\welcome.ps1"

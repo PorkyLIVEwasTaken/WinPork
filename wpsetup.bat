@@ -11,17 +11,9 @@ if exist C:\WinPork\wp\users\su (
 ) else (
 	setlocal enabledelayedexpansion
 	echo [[33mWARN[0m] Super-User is missing, creating a new one...
-	mkdir C:\WinPork\wp\users\su\cnfg
-	mkdir C:\WinPork\wp\users\su\docs
-	mkdir C:\WinPork\wp\users\su\home
-	mkdir C:\WinPork\wp\users\su\imgs
-	mkdir C:\WinPork\wp\users\su\root
-	mkdir C:\WinPork\wp\users\su\shdw
-	mkdir C:\WinPork\wp\users\su\trsh
-	mkdir C:\WinPork\wp\users\su\vids
-	mkdir C:\WinPork\wp\users\su\msic
+	xcopy C:\WinPork\templates\su C:\WinPork\wp\users\su /E /C /I /Q /H /R /K /Y
 	set wp_su_verification="WPRTE:%random%:%random%:%random%:%random%:%random%"
-	echo %wp_su_verification% > "C:\WinPork\wp\users\su\shdw\uuid.wpuser"
+	echo !wp_su_verification! > "C:\WinPork\wp\users\su\shdw\uuid.wpuser"
 	echo=
 	echo Enter a new password for the Super-User. 
 	echo The Super-User has some elevated permissions, and is the default user. This user cannot be removed through WinPork.
@@ -29,8 +21,8 @@ if exist C:\WinPork\wp\users\su (
 	echo=
 	set /p sudopassword=Please enter a new password for the Super-User:
 	echo [[92mSUCCESS[0m] Super-User has been created.
-	@echo %sudopassword% > "C:\WinPork\wp\users\su\shdw\passwd.wpshdw"
-	@echo %sudopassword% > "C:\WinPork\wp\aether\sudo.passwd"
+	@echo !sudopassword! > "C:\WinPork\wp\users\su\shdw\passwd.wpshdw"
+	@echo !sudopassword! > "C:\WinPork\wp\aether\sudo.passwd"
 	@attrib +r +h "C:\WinPork\wp\aether\sudo.passwd"
 
 	echo [[96mPERFORM[0m] Creation of first User...
@@ -39,28 +31,19 @@ if exist C:\WinPork\wp\users\su (
 	echo Type "skip" to skip this step completely.
 	set /p wp_newusername=What would you like to be the name of the new user? 
 	
-	if wp_newusername=="skip" (
+	if !wp_newusername!=="skip" (
 		goto :continuesetup1
 	) else (
 	echo Enter the password for this secondary user.
 		echo If you forget the password of any secondary user, you can log into the Super-User to reset the password for this User.
 		set /p password=What would you like to be the password of the new user? 
-		mkdir C:\WinPork\wp\users\%wp_newusername%
-		mkdir C:\WinPork\wp\users\%wp_newusername%\cnfg
-		mkdir C:\WinPork\wp\users\%wp_newusername%\docs
-		mkdir C:\WinPork\wp\users\%wp_newusername%\home
-		mkdir C:\WinPork\wp\users\%wp_newusername%\imgs
-		mkdir C:\WinPork\wp\users\%wp_newusername%\root
-		mkdir C:\WinPork\wp\users\%wp_newusername%\shdw
-		mkdir C:\WinPork\wp\users\%wp_newusername%\trsh
-		mkdir C:\WinPork\wp\users\%wp_newusername%\vids
-		mkdir C:\WinPork\wp\users\%wp_newusername%\msic
+		xcopy C:\WinPork\templates\user C:\WinPork\wp\users\!wp_newusername! /E /C /I /Q /H /R /K /Y 
 		set wp_verification=WPRTE:%random%:%random%:%random%:%random%:%random%
-		echo %wp_verification% > "C:\WinPork\wp\users\%wp_newusername%\shdw\uuid.wpuser"
-		@echo %password% > "C:\WinPork\wp\users\%wp_newusername%\shdw\passwd.wpshdw"
-		@attrib +r +h C:\WinPork\wp\users\%wp_newusername%\shdw\passwd.wpshdw
-		@attrib +r +h C:\WinPork\wp\users\%wp_newusername%\shdw\uuid.wpuser
-		echo [[92mSUCCESS[0m] User %wp_newusername% has been created.
+		echo !wp_verification! > "C:\WinPork\wp\users\!wp_newusername!\shdw\uuid.wpuser"
+		@echo !password! > "C:\WinPork\wp\users\!wp_newusername!\shdw\passwd.wpshdw"
+		@attrib +r +h C:\WinPork\wp\users\!wp_newusername!\shdw\passwd.wpshdw
+		@attrib +r +h C:\WinPork\wp\users\!wp_newusername!\shdw\uuid.wpuser
+		echo [[92mSUCCESS[0m] User !wp_newusername! has been created.
 		goto :continuesetup1
 		endlocal
 	)

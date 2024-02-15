@@ -1,10 +1,5 @@
 @echo off
 
-if exist C:\WinPork\wp\var\lwpch.b (
-  mkdir C:\WinPork\logs
-  doskey /history > "C:\WinPork\logs\%DATE%_%TIME%.wplog"
-)
-
 goto mode%1%
 
 :mode
@@ -25,6 +20,9 @@ echo [[94mSTART[0m] Shutdown
 
 echo [[1;95mINFO[0m] The system will be shut down shortly...
 
+set quitreason=SHUTDOWN
+doskey /history > "C:\WinPork\wp\logs\%QUITREASON%_%OS%_%OSARCH%_%NUMBER_OF_PROCESSORS%_%WP_VER%_%RAC%_%RANDOM%.log"
+
 shutdown /s /f /t 0
 exit /b 0
 
@@ -37,6 +35,10 @@ exit /b 0
 echo [[94mSTART[0m] Reboot to Windows
 
 echo [[1;95mINFO[0m] The system will be rebooted into Windows shortly...
+
+set quitreason=RESTART_WINDOWS
+doskey /history > "C:\WinPork\wp\logs\%QUITREASON%_%OS%_%OSARCH%_%NUMBER_OF_PROCESSORS%_%WP_VER%_%RAC%_%RANDOM%.log"
+
 shutdown /r /f /t 0
 exit /b 0
 
@@ -46,6 +48,10 @@ exit /b 0
 echo [[94mSTART[0m] Reboot to Windows Safe Mode
 
 echo [[1;95mINFO[0m] The system will be rebooted into Windows Safe Mode shortly...
+
+set quitreason=RESTART_SAFE_MODE
+doskey /history > "C:\WinPork\wp\logs\%QUITREASON%_%OS%_%OSARCH%_%NUMBER_OF_PROCESSORS%_%WP_VER%_%RAC%_%RANDOM%.log"
+
 bcdedit /set {current} safeboot minimal
 reg import C:\winpork\reg\winporksafemodeoff.reg
 shutdown /r /f /t 0
@@ -56,6 +62,10 @@ exit /b 0
 :gui4
 echo [[94mSTART[0m] Reboot to Firmware
 echo [[1;95mINFO[0m] The system will be rebooted to firmware shortly...
+
+set quitreason=RESTART_FIRMWARE
+doskey /history > "C:\WinPork\wp\logs\%QUITREASON%_%OS%_%OSARCH%_%NUMBER_OF_PROCESSORS%_%WP_VER%_%RAC%_%RANDOM%.log"
+
 reg import C:\winpork\reg\winporksafemodeoff.reg
 shutdown /r /fw /f /t 0
 exit /b 0
@@ -64,6 +74,10 @@ exit /b 0
 :gui5
 echo [[94mSTART[0m] Reboot to WinPork
 echo [[1;95mINFO[0m] The system will be rebooted to WinPork shortly...
+
+set quitreason=RESTART_WINPORK
+doskey /history > "C:\WinPork\wp\logs\%QUITREASON%_%OS%_%OSARCH%_%NUMBER_OF_PROCESSORS%_%WP_VER%_%RAC%_%RANDOM%.log"
+
 reg import C:\winpork\reg\winporksetupmaintainer.reg
 shutdown /r /f /t 0
 exit /b 0
