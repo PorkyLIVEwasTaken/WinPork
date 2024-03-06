@@ -14,8 +14,37 @@ echo=
 echo [[94mSTART[0m] Activating WinPork auto-disable on reboot...
 echo [[96mPERFORM[0m] WinPork startup regkey cleanup...
 reg import C:\winpork\reg\winporksetupcloser.reg
-set quitreason=CRASH
+setx quitreason "0xC0000139"
 echo [[92mSUCCESS[0m] WinPork disables at reboot!
+
+echo [[96mPERFORM[0m] Importing predefined files and directories to file system...
+xcopy "C:\WinPork\.wp\*" "C:\WinPork\wp\" /E /C /I /Q /H /R /K /Y
+xcopy "C:\WinPork\addons\*" "C:\WinPork\aliases\.mod" /E /C /I /Q /H /R /K /Y
+
+echo [[94mSTART[0m] Preparing WinPork commands...
+echo [[96mPERFORM[0m] Recognising WinPork command aliases...
+echo [[96mPERFORM[0m] Mounting community-made Commands...
+set "PATH=%PATH%;C:\WinPork\aliases"
+
+if not exist C:\WinPork\wp\var\boot\wps_nml.b (
+set "PATH=%PATH%;C:\WinPork\aliases\.mod"
+	goto continuesavloc
+) else (
+  echo [[33mWARN[0m] Settings dictated that no community-made Commands should be mounted, skipping...
+  goto continuesavloc
+)
+:continuesavloc
+
+echo [[96mPERFORM[0m] Recognising addon command aliases...
+set "PATH=%PATH%;C:\WinPork\addons\nircmd"
+echo [[92mSUCCESS[0m] Prepared WinPork commands!
+
+echo [[96mPERFORM[0m] Size window with parms [cols=225 lines=60]...
+mode con: cols=208 lines=54 
+nircmd.exe win -style ititle "WinPork RTE" 0x00C00000
+nircmd.exe win -style ititle "WinPork RTE" 0x00040000
+nircmd.exe win max ititle "WinPork RTE"
+nircmd.exe win settopmost ititle "WinPork RTE" 1
 
 echo [[96mPERFORM[0m] WinPork UCID Verification Check...
 < C:\WinPork\wp\aether\ucid.wp ( 
@@ -55,12 +84,6 @@ if exist C:\WinPork\wp\sys\dtr.b (
 
 	echo [SUCCESS] Symbolic links created for drives A: through Z:
 
-	echo [.ShellClassInfo] > C:\WinPork\wp\desktop.ini
-	echo IconResource=C:\Windows\System32\imageres.dll,29 >> C:\WinPork\wp\desktop.ini
-	echo [ViewState] >> C:\WinPork\wp\desktop.ini
-	echo Mode= >> C:\WinPork\wp\desktop.ini
-	echo Vid= >> C:\WinPork\wp\desktop.ini
-	echo FolderType=Generic >> C:\WinPork\wp\desktop.ini
 	@attrib +r +h +s C:\WinPork\wp\desktop.ini
 	@attrib +s C:\WinPork\wp\
 
@@ -97,7 +120,7 @@ if exist C:\WinPork\wp\sys\setpfl.b (
   REM copy nul C:\WinPork\wp\var\boot\chk\wps_SRAMc.b
   REM copy nul C:\WinPork\wp\var\boot\chk\wps_Snetc.b
   copy nul C:\WinPork\wp\var\boot\wps_ufsm.b
-  copy nul C:\WinPork\wp\sys\bootr.d
+  REM copy nul C:\WinPork\wp\var\pref\wps_wallpaper.loc
   if not exist C:\WinPork\wp\var\boot\chk\minram.int (
 	echo 16777216 > C:\WinPork\wp\var\boot\chk\minram.int
   )
@@ -131,34 +154,6 @@ goto continuesettings
 )
 :continuesettings
 echo [[92mSUCCESS[0m] WinPork Settings loaded!
-
-echo [[96mPERFORM[0m] Importing predefined files and directories to file system...
-xcopy "C:\WinPork\.wp\*" "C:\WinPork\wp\" /E /C /I /Q /H /R /K /Y
-xcopy "C:\WinPork\addons\*" "C:\WinPork\aliases\.mod" /E /C /I /Q /H /R /K /Y
-
-echo [[94mSTART[0m] Preparing WinPork commands...
-echo [[96mPERFORM[0m] Recognising WinPork command aliases...
-echo [[96mPERFORM[0m] Mounting community-made Commands...
-set PATH=%PATH%;C:\WinPork\aliases
-
-if not exist C:\WinPork\wp\var\boot\wps_nml.b (
-	set PATH=%PATH%;C:\WinPork\aliases\.mod
-	goto continuesavloc
-) else (
-  echo [[33mWARN[0m] Settings dictated that no community-made Commands should be mounted, skipping...
-  goto continuesavloc
-)
-:continuesavloc
-
-echo [[96mPERFORM[0m] Recognising addon command aliases...
-set PATH=%PATH%;C:\WinPork\addons\nircmd
-echo [[92mSUCCESS[0m] Prepared WinPork commands!
-
-echo [[96mPERFORM[0m] Size window with parms [cols=225 lines=60]...
-mode con: cols=208 lines=54 
-nircmd.exe win -style ititle "WinPork RTE" 0x00C00000
-nircmd.exe win -style ititle "WinPork RTE" 0x00040000
-nircmd.exe win max ititle "WinPork RTE"
 
 if not exist C:\WinPork\wp\var\boot\chk\wps_SOSc.b (
 echo [[96mPERFORM[0m] WinPork Operating System Check...
@@ -262,11 +257,9 @@ if not exist C:\WinPork\wp\var\boot\chk\wps_Snetc.b (
 )
 :continuenetwork
 
-set RAC=0
-
 if not exist "C:\WinPork\wp\var\boot\wps_dwws.b" (
-  powershell -File "C:\WinPork\welcome.ps1"
-  rem goto continuewelcomescreen
+	powershell -File "C:\WinPork\welcome.ps1"
+	rem goto continuewelcomescreen
 )
 :continuewelcomescreen
 

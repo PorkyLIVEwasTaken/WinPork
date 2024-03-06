@@ -54,7 +54,7 @@ exit /b 0
 if "%logonusername%" == "su" ( 
 set /p wpusername="[[1;95mQUEST[0m] What is the name of the user that has to be deleted? "
 if "%wpusername%" == "su" (
-    echo [[91mFAIL[0m] You cannot delete the Super-User!
+    echo [[91mFAIL[0m] You cannot delete the Super-User%
 ) else (
 choice /m "Are you sure you want to delete this user? " /d N /t 10 /c NY
 if %errorlevel% == 1 (
@@ -67,14 +67,14 @@ if %errorlevel% == 1 (
 )
 )
 ) else (
-    echo [[91mFAIL[0m] You need to be logged in as the Super-User to do this!
+    echo [[91mFAIL[0m] You need to be logged in as the Super-User to do this%
 	exit /b 0
 )
 
 :modeconvuser
 set /p wpusername="[[1;95mQUEST[0m] What is the name of the user that needs to be converted to a Windows account? "
 if "%wpusername%" == "su" (
-    echo [[91mFAIL[0m] The Super-User cannot be converted to a Windows account!
+    echo [[91mFAIL[0m] The Super-User cannot be converted to a Windows account%
 	exit /b 0
 ) else (
     echo [[94mSTART[0m] Convert User (WinPork to Windows)
@@ -149,7 +149,7 @@ exit /b 0
 :modeRACdeluser
 set /p wpusername="[[1;95mQUEST[0m] What is the name of the user that has to be deleted? "
 if "%wpusername%" == "su" (
-    echo [[91mFAIL[0m] You cannot delete the Super-User!
+    echo [[91mFAIL[0m] You cannot delete the Super-User%
 ) else ( 
 choice /m "Are you sure you want to delete this user? " /d N /t 10 /c NY
 if %errorlevel% == 1 (
@@ -165,7 +165,7 @@ if %errorlevel% == 1 (
 :modeRACconvuser
 set /p wpusername="[[1;95mQUEST[0m] What is the name of the user that needs to be converted to a Windows account? "
 if "%wpusername%" == "su" (
-    echo [[91mFAIL[0m] The Super-User cannot be converted to a Windows account!
+    echo [[91mFAIL[0m] The Super-User cannot be converted to a Windows account%
 	exit /b 0
 ) else (
     echo [[94mSTART[0m] Convert User (WinPork to Windows)

@@ -38,12 +38,12 @@ if !logonusername!==[] (
 :incorrectpassword
 set /p logonpassword=Password: 
 
-set "verifypassword="
+set verifypassword=[]
 
 rem Read the content of the file into the variable
 < "C:\WinPork\wp\users\!logonusername!\shdw\passwd.wpshdw" set /p verifypassword=
 
-if !logonpassword! == !verifypassword! (
+if !logonpassword!==!verifypassword! (
     goto logoncontinue
 ) else (
     echo Incorrect password!
@@ -64,5 +64,10 @@ echo Version: %wp_ver%
 echo=
 echo The programs included with the WinPork system are free software; the exact distribution terms for each program are described in the individual files in C:\WinPork\LICENSE.
 echo WinPork comes with ABSOLUTELY NO WARRANTY, and the creators are NOT responsible for any damages done by using WinPork, to the extend permitted by applicable law.
+
+if !RAC!==1 (
+	echo [[33mWARN[0m] Not all commands might be available through WinPork Run As Companion!
+)
+
 echo=
 echo Type "nogui" for a list of available WinPork commands.

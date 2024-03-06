@@ -11,3 +11,6 @@ wp/
 logs/
 aliases/.mod/*
 !aliases/.mod/example.bat
+.launcher/.vs/
+.launcher/build/
+.launcher/launcher.spec
