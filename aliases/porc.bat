@@ -10,6 +10,8 @@ if "%1" == "install" (
     call :run %*
 ) else if "%1" == "list" (
     call :list %*
+) else if "%1" == "new" (
+    call :new %*
 ) else (
     echo [[91mFAIL[0m] Unknown command: %1
     exit /b 1
@@ -63,4 +65,9 @@ exit /b 0
 :list
 rem Implementation for list command
 dir "C:\WinPork\aliases\.mod" /b
+exit /b 0
+
+:new
+copy nul C:\WinPork\aliases\.mod\%1.bat
+notepad.exe C:\WinPork\aliases\.mod\%1.bat
 exit /b 0
