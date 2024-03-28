@@ -19,6 +19,12 @@ cls
 
 title WinPork RTE (Use ALT+F4 to reboot to Windows...)
 
+if exist C:\WinPork\wp\var\boot\wp_nli.b (
+	set logonusername=su
+	set logonpassword=[]
+	goto :skiplogin
+)
+
 setlocal enabledelayedexpansion
 echo [[96mPERFORM[0m] Log in system...
 :usernotexist
@@ -56,6 +62,8 @@ if !logonpassword!==!verifypassword! (
 
 :logoncontinue
 endlocal
+
+:skiplogin
 
 cls
 title WinPork RTE

@@ -36,7 +36,13 @@ set "PATH=%PATH%;C:\WinPork\aliases\.mod"
 :continuesavloc
 
 echo [[96mPERFORM[0m] Recognising addon command aliases...
+
+REM List of all addons that should be loaded!
 set "PATH=%PATH%;C:\WinPork\addons\nircmd"
+
+set "PATH=%PATH%;C:\WinPork\addons\adb"
+adb devices
+
 echo [[92mSUCCESS[0m] Prepared WinPork commands!
 
 echo [[96mPERFORM[0m] Size window with parms [cols=225 lines=60]...

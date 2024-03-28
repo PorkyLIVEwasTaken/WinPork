@@ -160,14 +160,6 @@ goto c13
 
 
 :c13
-set /p wallpaper_location="What filepath should be used as the wallpaper: "
-echo !wallpaper_location! > C:\WinPork\wp\var\pref\wps_wallpaper.loc
-goto c14
-
-
-
-
-:c14
 
 echo [[92mSUCCESS[0m] Completed Settings Wizard!
 endlocal
@@ -187,6 +179,5 @@ del C:\WinPork\wp\var\boot\chk\wps_SRAMc.b /q
 del C:\WinPork\wp\var\boot\chk\wps_Snetc.b /q
 copy nul C:\WinPork\wp\var\boot\wps_ufsm.b
 echo 16777216 > C:\WinPork\wp\var\boot\chk\minram.int
-echo C:\WinPork\wp\lib\imgs\wallpaper.png > C:\WinPork\wp\var\pref\wps_wallpaper.loc
 echo [[92mSUCCESS[0m] WinPork Settings have been reset to default values!
 exit /b 0

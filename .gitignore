@@ -9,6 +9,7 @@ Generated Test Files/
 Decrypted/
 wp/
 logs/
+.vs/
 aliases/.mod/*
 !aliases/.mod/example.bat
 .launcher/.vs/
